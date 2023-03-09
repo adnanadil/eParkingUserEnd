@@ -16,7 +16,7 @@ export const ParkingTimePickerBar = ({ timeSlots }) => {
   return (
     <ParkingTimePickerWrapper>
       <Spacer variant="left.large">
-        <Text variant="title">Time Slots</Text>
+        <Text variant="title">Available Time Slots</Text>
       </Spacer>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
