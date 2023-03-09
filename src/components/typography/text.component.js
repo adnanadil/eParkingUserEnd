@@ -9,6 +9,10 @@ const defaultTextStyles = (theme) => `
   margin-bottom: 0px;
 `;
 
+const title = (theme) => `
+    font-size: ${theme.fontSizes.title};
+`;
+
 const body = (theme) => `
     font-size: ${theme.fontSizes.body};
 `;
@@ -32,12 +36,21 @@ const label = (theme) => `
     font-weight: ${theme.fontWeights.medium};
 `;
 
+const timeButtonText = (theme) => `
+    font-family: ${theme.fonts.heading};
+    font-size: ${theme.fontSizes.body};
+    font-weight: ${theme.fontWeights.medium};
+    color: ${theme.colors.bg.primary};
+`;
+
 const variants = {
+  title,
   body,
   label,
   caption,
   error,
   hint,
+  timeButtonText
 };
 
 export const Text = styled.Text`

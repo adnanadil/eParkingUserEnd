@@ -1,5 +1,6 @@
 import React from "react";
 import { MainParikingScreen } from "../../screens/mainParkingScreen/screen/mainParking.screen";
+import { EachParkingScreen } from "../../screens/mainParkingScreen/screen/each.parking.screen";
 
 import {
   createStackNavigator,
@@ -18,6 +19,8 @@ const emitMessage = () => {
 }
 */
 
+/*
+For nested stack navigation/ multiple stack navigation
 const IndividualParking = ({navigation}) => {
   return(
     <View>
@@ -28,6 +31,7 @@ const IndividualParking = ({navigation}) => {
     </View>
   );
 }
+*/
 
 const ScreenAfterPayment = () => {
   return(
@@ -55,7 +59,8 @@ export const MainParkingNavigator = ({ route, navigation }) => {
         name="Parking"
         component={MainParikingScreen}
       />
-      <ParkingStack.Screen name="Indivdual Parking" component={IndividualParking} />
+      {/* <ParkingStack.Screen name="Indivdual Parking" component={IndividualParking} /> */}
+      <ParkingStack.Screen name="Indivdual Parking" component={EachParkingScreen} />
       <ParkingStack.Screen name="After Payment" component={ScreenAfterPayment} />
     </ParkingStack.Navigator>
   );
