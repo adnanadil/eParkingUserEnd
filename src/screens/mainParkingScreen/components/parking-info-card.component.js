@@ -9,32 +9,31 @@ import star from "../../../../assets/star";
 import open from "../../../../assets/open";
 
 import {
-  RestaurantCard,
-  RestaurantCardCover,
+  ParkingCard,
+  ParkingCardCover,
   Info,
   Section,
   SectionEnd,
   Rating,
   Icon,
   Address,
-} from "./restaurant-info-card.styles";
+} from "./parking-info-card.styles";
 
-export const RestaurantInfoCard = ({ restaurant = {} }) => {
+export const ParkingInfoCard = ({ parking = {} }) => {
   const {
-    name = "Some Restaurant",
-    photo = "https://www.foodiesfeed.com/wp-content/uploads/2019/06/top-view-for-box-of-2-burgers-home-made-600x899.jpg",
-  } = restaurant;
+    name = "Some Parking",
+    photo = "https://welcomesaudi.com/uploads/0000/1/2021/07/23/84-khobar-corniche-eastern-province.jpg",
+  } = parking;
 
   return (
-    <RestaurantCard elevation={5}>
+    <ParkingCard elevation={5}>
       <View>
-        {/* <Favourite restaurant={restaurant} /> */}
-        <RestaurantCardCover key={name} source={{ uri: photo }} />
+        <ParkingCardCover key={name} source={{ uri: photo }} />
       </View>
       <Info>
         <Text variant="body">{name}</Text>
         {/* <Address>{address}</Address> */}
       </Info>
-    </RestaurantCard>
+    </ParkingCard>
   );
 };

@@ -5,13 +5,11 @@ import { SafeArea } from "../../../Utility/SafeArea";
 import { Spacer } from "../../../components/spacer/spacer.component";
 import { FadeInView } from "../../../components/animations/fade.animation";
 
-import { RestaurantList } from "../components/restaurant-list.styles";
-import { RestaurantInfoCard } from "../components/restaurant-info-card.component";
+import { ParkingList } from "../components/parking-list.styles";
+import { ParkingInfoCard } from "../components/parking-info-card.component";
 
-// const restaurants = ["ALBA", "Dalba", "Chulba"]
 
-const restaurants = [
-  
+const parkings = [
   {
     name: "Prince Mohammed Bin Fahd University",
     photo:
@@ -41,20 +39,20 @@ const restaurants = [
 export const MainParikingScreen = ({ navigation }) => {
   return (
     <SafeArea>
-      <RestaurantList
-        data={restaurants}
+      <ParkingList
+        data={parkings}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("Indivdual Parking", {
-                  restaurant: item,
+                  parking: item,
                 })
               }
             >
               <Spacer position="bottom" size="large">
                 <FadeInView>
-                  <RestaurantInfoCard restaurant={item} />
+                  <ParkingInfoCard parking={item} />
                 </FadeInView>
               </Spacer>
             </TouchableOpacity>
