@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { SafeArea } from "../../../Utility/SafeArea";
@@ -8,6 +8,11 @@ import { FadeInView } from "../../../components/animations/fade.animation";
 import { ParkingList } from "../components/parking-list.styles";
 import { ParkingInfoCard } from "../components/parking-info-card.component";
 
+import { useSelector, useDispatch } from "react-redux";
+import { timeSlotPicked } from "../../../redux/timeSelectedSlice";
+import { resetTimeSlotArrayAction } from "../../../redux/timeSelectedSlice";
+
+import { useIsFocused } from "@react-navigation/native";
 
 const parkings = [
   {
@@ -33,6 +38,16 @@ const parkings = [
 ];
 
 export const MainParikingScreen = ({ navigation }) => {
+  
+  // We use this in order to reset the time slot if the user moves back.
+  const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    // dispatch(timeSlotPicked(""));
+    dispatch(resetTimeSlotArrayAction());
+    
+  }, [isFocused]);
+
   return (
     <SafeArea>
       <ParkingList

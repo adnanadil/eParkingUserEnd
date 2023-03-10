@@ -20,6 +20,8 @@
     "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-native": "0.71.3",
+    "react-native-credit-card-input": "^0.4.1",
+    "react-native-credit-card-input-plus": "^0.4.7",
     "react-native-paper": "^5.3.1",
     "react-native-svg": "^13.8.0",
     "react-redux": "^8.0.5",

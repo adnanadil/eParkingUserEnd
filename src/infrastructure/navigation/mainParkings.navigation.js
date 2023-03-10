@@ -1,6 +1,7 @@
 import React from "react";
 import { MainParikingScreen } from "../../screens/mainParkingScreen/screen/mainParking.screen";
 import { EachParkingScreen } from "../../screens/mainParkingScreen/screen/each.parking.screen";
+import { Button } from "react-native-paper";
 
 import {
   createStackNavigator,
@@ -34,13 +35,12 @@ const IndividualParking = ({navigation}) => {
 */
 
 const ScreenAfterPayment = () => {
-  return(
+  return (
     <View>
       <Text>Payment pass or fail</Text>
     </View>
   );
-}
-
+};
 
 const ParkingStack = createStackNavigator();
 
@@ -60,8 +60,23 @@ export const MainParkingNavigator = ({ route, navigation }) => {
         component={MainParikingScreen}
       />
       {/* <ParkingStack.Screen name="Indivdual Parking" component={IndividualParking} /> */}
-      <ParkingStack.Screen name="Indivdual Parking" component={EachParkingScreen} />
-      <ParkingStack.Screen name="After Payment" component={ScreenAfterPayment} />
+      <ParkingStack.Screen
+        name="Indivdual Parking"
+        component={EachParkingScreen}
+        // options={{
+        //   headerRight: () => (
+        //     <Button
+        //       onPress={() => console.log("This is a button!")}
+        //       title="Hello there 2"
+        //       color="#fff"
+        //     />
+        //   ),
+        // }}
+      />
+      <ParkingStack.Screen
+        name="After Payment"
+        component={ScreenAfterPayment}
+      />
     </ParkingStack.Navigator>
   );
 };
