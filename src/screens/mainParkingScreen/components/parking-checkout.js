@@ -2,7 +2,8 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { List } from "react-native-paper";
+
+import { useSelector, useDispatch } from "react-redux";
 
 import { Text } from "../../../components/typography/text.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
@@ -18,8 +19,14 @@ import {
   ClearButton,
   PaymentProcessing,
 } from "../components/parking-checkout.styles";
+import { updateBookingInProgress } from "../../../redux/parkingSlice";
 
 export const ParkingCheckoutComponent = () => {
+  const dispatch = useDispatch();
+
+  const bookingInProgress = useSelector(
+    (state) => state.parkingSlice.bookingInProgress
+  );
   const [name, setName] = useState("");
   const [card, setCard] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +40,9 @@ export const ParkingCheckoutComponent = () => {
       //   });
       console.log("Please fill in a valid credit card");
       return;
+    } else {
+      dispatch(updateBookingInProgress(true));
+      // Set it to false once you save it in Firestore... IA
     }
   };
 
@@ -58,6 +68,7 @@ export const ParkingCheckoutComponent = () => {
           </Spacer>
         </Spacer>
         <NameInput
+          disabled={bookingInProgress}
           label="Name"
           value={name}
           onChangeText={(t) => {
@@ -65,7 +76,7 @@ export const ParkingCheckoutComponent = () => {
           }}
         />
         <Spacer position="top" size="large">
-          {name.length > 0 && (
+          {name.length > 0 && !bookingInProgress && (
             <CreditCardInputComponent
               name={name}
               onSuccess={setCard}

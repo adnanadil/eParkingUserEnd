@@ -9,8 +9,14 @@ import { ParkingList } from "../components/parking-list.styles";
 import { ParkingInfoCard } from "../components/parking-info-card.component";
 
 import { useSelector, useDispatch } from "react-redux";
-import { timeSlotPicked } from "../../../redux/timeSelectedSlice";
-import { resetTimeSlotArrayAction } from "../../../redux/timeSelectedSlice";
+import {
+  resetHours,
+  resetTimeSlotDetails,
+  timeSlotPicked,
+  updateBookingInProgress,
+  updateSearchCompleted,
+} from "../../../redux/parkingSlice";
+import { resetTimeSlotArrayAction } from "../../../redux/parkingSlice";
 
 import { useIsFocused } from "@react-navigation/native";
 
@@ -38,14 +44,16 @@ const parkings = [
 ];
 
 export const MainParikingScreen = ({ navigation }) => {
-  
   // We use this in order to reset the time slot if the user moves back.
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   useEffect(() => {
-    // dispatch(timeSlotPicked(""));
-    dispatch(resetTimeSlotArrayAction());
-    
+    dispatch(timeSlotPicked(""));
+    dispatch(resetTimeSlotDetails());
+    dispatch(updateSearchCompleted(false));
+    dispatch(updateBookingInProgress(false));
+    dispatch(resetHours());
+    // dispatch(resetTimeSlotArrayAction());
   }, [isFocused]);
 
   return (

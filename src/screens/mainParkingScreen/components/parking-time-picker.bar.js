@@ -10,13 +10,14 @@ const ParkingTimePickerWrapper = styled.View`
   padding: 10px;
 `;
 export const ParkingTimePickerBar = ({ timeSlots }) => {
+
   if (!timeSlots.length) {
     return null;
   }
   return (
     <ParkingTimePickerWrapper>
       <Spacer variant="left.large">
-        <Text variant="title">Available Time Slots</Text>
+        <Text variant="title">Time Slots</Text>
       </Spacer>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>

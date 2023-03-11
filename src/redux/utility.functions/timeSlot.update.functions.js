@@ -20,3 +20,8 @@ export const deleteTheTimeSlot = (oldTimeSlotsArray, timeSlotToDel) => {
         oldTimeSlotItem !== timeSlotToDel
     )
 }
+
+export const updateTheTimeSlotDetails = (oldTimeSlotsDetails, newTimeSlotDetails) => {
+    // If the time slot is not there then we will add the new time slot
+    return [...oldTimeSlotsDetails, newTimeSlotDetails]
+}

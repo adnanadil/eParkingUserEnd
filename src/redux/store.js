@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit'
-import timeSelectedReducer from './timeSelectedSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import parkingReducer from "./parkingSlice";
 
 export default configureStore({
-    reducer: {
-        timeSelectedSlice: timeSelectedReducer,
-    }
-  })
+  reducer: {
+    parkingSlice: parkingReducer,
+  },
+});

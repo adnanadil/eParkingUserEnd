@@ -43,6 +43,13 @@ const timeButtonText = (theme) => `
     color: ${theme.colors.bg.primary};
 `;
 
+const hourValueButton = (theme) => `
+    font-family: ${theme.fonts.heading};
+    font-size: ${theme.fontSizes.h4};
+    font-weight: ${theme.fontWeights.medium};
+    color: ${theme.colors.bg.primary};
+`;
+
 const variants = {
   title,
   body,
@@ -50,7 +57,8 @@ const variants = {
   caption,
   error,
   hint,
-  timeButtonText
+  timeButtonText, 
+  hourValueButton
 };
 
 export const Text = styled.Text`
