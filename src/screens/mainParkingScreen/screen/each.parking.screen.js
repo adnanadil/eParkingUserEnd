@@ -33,7 +33,7 @@ export const EachParkingScreen = ({ route, navigation }) => {
   const { parking } = route.params;
   const [parkingTimeSlots, setParkingTimeSlots] = useState([]);
   useEffect(() => {
-    console.log(`Parking ${parking.name}`);
+    // console.log(`Parking ${parking.name}`);
     navigation.setOptions({
       title: parking.name,
     });

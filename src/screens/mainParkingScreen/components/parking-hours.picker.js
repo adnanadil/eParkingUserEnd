@@ -11,6 +11,7 @@ import {
   decreaseHours,
   increseHours,
   updateSearchCompleted,
+  updateSearchPressed,
 } from "../../../redux/parkingSlice";
 
 const Holder = styled.View`
@@ -44,11 +45,19 @@ export const ParkingHoursPicker = () => {
   const bookingInProgress = useSelector(
     (state) => state.parkingSlice.bookingInProgress
   );
+  const searchPressed = useSelector(
+    (state) => state.parkingSlice.searchPressed
+  );
 
   const hoursSelected = useSelector(
     (state) => state.parkingSlice.hoursSelected
   );
   const dispatch = useDispatch();
+
+  const onPressForSearchButoon = () => {
+    dispatch(updateSearchPressed(true));
+    dispatch(updateSearchCompleted(true))
+  }
 
   return (
     <Holder>
@@ -66,7 +75,7 @@ export const ParkingHoursPicker = () => {
         <Text variant="hourValueButton">+</Text>
       </ValueButton>
       <SearchButton
-        onPress={() => dispatch(updateSearchCompleted(true))}
+        onPress={onPressForSearchButoon}
         disabled={bookingInProgress}
       >
         <Ionicons name="md-search" size={32} color="white" />

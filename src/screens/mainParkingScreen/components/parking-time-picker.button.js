@@ -11,7 +11,49 @@ import { TimeSlotButtonUnselected } from "./parking-time-button.styled";
 
 import moment from "moment/moment";
 
+// import * as firebase from "firebase";
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/auth";
+// import "firebase/compat/firestore";
+
+import { app } from "../../../Utility/firebase.utils";
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from "firebase/auth";
+
 export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
+  const callMePlease = () => {
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        const uid = user.uid;
+        console.log("We have a user");
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        console.log("NO user !!!");
+      }
+    });
+    createUserWithEmailAndPassword(auth, "addu@gmail.com", "password")
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Sign up success !!!");
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Sign up Fail !!!");
+        // ..
+      });
+  };
+
+  const thisFunction = () => {
+    console.log("New new");
+  };
+
   const selectedTimeState = useSelector(
     (state) => state.parkingSlice.selectedTime
   );
@@ -20,6 +62,9 @@ export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
   );
   const bookingInProgress = useSelector(
     (state) => state.parkingSlice.bookingInProgress
+  );
+  const organizations = useSelector(
+    (state) => state.parkingSlice.currentlyAvailableTimeSlotsDetails
   );
   const dispatch = useDispatch();
   //   console.log(`This is the time selected from Work ${selectedTimeState}`);
@@ -86,6 +131,8 @@ export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
           disabled={false}
           // onPress={() => dispatch(timeSlotPicked(timeSlot))}
           // onPress={() => dispatch(deletTimeSlotAction(timeSlot))}
+          onPress={callMePlease}
+          // onPress={() => console.log(JSON.stringify(organizations, null, 2))}
         >
           <Text center variant="timeButtonText" numberOfLines={3}>
             {timeSlot}

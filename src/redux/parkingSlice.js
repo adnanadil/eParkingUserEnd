@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   updateTheTimeSlot,
   updateTheTimeSlotDetails,
-} from "./utility.functions/timeSlot.update.functions";
-import { deleteTheTimeSlot } from "./utility.functions/timeSlot.update.functions";
+} from "./utility.functions/parkingSlice.update.functions";
+import { deleteTheTimeSlot } from "./utility.functions/parkingSlice.update.functions";
 
 export const parkingSlice = createSlice({
   name: "timeSelected",
@@ -12,6 +12,7 @@ export const parkingSlice = createSlice({
     selectedTimeArray: [],
     hoursSelected: 1,
     currentlyAvailableTimeSlotsDetails: [],
+    searchPressed: false,
     searchCompleted: false,
     bookingInProgress: false,
   },
@@ -53,9 +54,13 @@ export const parkingSlice = createSlice({
         state.currentlyAvailableTimeSlotsDetails,
         action.payload
       );
+      // state.currentlyAvailableTimeSlotsDetails = ["Show this brother"]
     },
     resetTimeSlotDetails: (state, action) => {
       state.currentlyAvailableTimeSlotsDetails = [];
+    },
+    updateSearchPressed: (state, action) => {
+      state.searchPressed = action.payload;
     },
     updateSearchCompleted: (state, action) => {
       state.searchCompleted = action.payload;
@@ -75,6 +80,7 @@ export const {
   decreaseHours,
   pushTimeSlotDetails,
   resetTimeSlotDetails,
+  updateSearchPressed,
   updateSearchCompleted,
   updateBookingInProgress,
   resetHours

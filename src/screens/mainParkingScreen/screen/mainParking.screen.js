@@ -15,6 +15,7 @@ import {
   timeSlotPicked,
   updateBookingInProgress,
   updateSearchCompleted,
+  updateSearchPressed,
 } from "../../../redux/parkingSlice";
 import { resetTimeSlotArrayAction } from "../../../redux/parkingSlice";
 
@@ -50,6 +51,7 @@ export const MainParikingScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(timeSlotPicked(""));
     dispatch(resetTimeSlotDetails());
+    dispatch(updateSearchPressed(false));
     dispatch(updateSearchCompleted(false));
     dispatch(updateBookingInProgress(false));
     dispatch(resetHours());
