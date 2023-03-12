@@ -2,36 +2,38 @@ import React from "react";
 import LottieView from "lottie-react-native";
 
 import { Spacer } from "../../../components/spacer/spacer.component";
+import { colors } from "../../../infrastructure/theme/colors";
 import {
-  AccountBackground,
-  AccountContainer,
-  AccountCover,
+  LoginBackground,
+  LoginContainer,
+  LoginCover,
   AuthButton,
   Title,
   AnimationWrapper,
-} from "../components/account.styles";
+} from "../components/login.styles";
+import { Text } from "../../../components/typography/text.component";
 
-export const AccountScreen = ({ navigation }) => {
+export const LoginOrRegisterScreen = ({ navigation }) => {
   return (
-    <AccountBackground>
-      <AccountCover />
+    <LoginBackground>
+      <LoginCover />
       <AnimationWrapper>
         <LottieView
           key="animation"
           autoPlay
           loop
           resizeMode="cover"
-          source={require("../../../../assets/watermelon.json")}
+          source={require("../../../../assets/man.json")}
         />
       </AnimationWrapper>
-      <Title>Meals To Go</Title>
-      <AccountContainer>
+      <Title>eParking</Title>
+      <LoginContainer>
         <AuthButton
           icon="lock-open-outline"
           mode="contained"
           onPress={() => navigation.navigate("Login")}
         >
-          Login
+          <Text variant="loginScreenButtonText">Login</Text>
         </AuthButton>
         <Spacer size="large">
           <AuthButton
@@ -39,10 +41,10 @@ export const AccountScreen = ({ navigation }) => {
             mode="contained"
             onPress={() => navigation.navigate("Register")}
           >
-            Register
+             <Text variant="loginScreenButtonText">Register</Text>
           </AuthButton>
         </Spacer>
-      </AccountContainer>
-    </AccountBackground>
+      </LoginContainer>
+    </LoginBackground>
   );
 };

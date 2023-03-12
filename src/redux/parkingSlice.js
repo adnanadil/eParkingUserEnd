@@ -6,7 +6,7 @@ import {
 import { deleteTheTimeSlot } from "./utility.functions/parkingSlice.update.functions";
 
 export const parkingSlice = createSlice({
-  name: "timeSelected",
+  name: "parkingSlice",
   initialState: {
     selectedTime: "",
     selectedTimeArray: [],

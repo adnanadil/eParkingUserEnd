@@ -12,7 +12,8 @@ import {
 import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
 
 import { ThemeProvider } from "styled-components";
-import { TabNavigation } from "./src/infrastructure/navigation/tab.navigation";
+// import { TabNavigation } from "./src/infrastructure/navigation/tab.navigation";
+import { RootNavigation } from "./src/infrastructure/navigation/index.navigation";
 
 export default function App() {
   const [oswaldLoaded] = useOswald({
@@ -30,7 +31,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <TabNavigation></TabNavigation>
+        {/* <TabNavigation></TabNavigation> */}
+        <RootNavigation></RootNavigation>
       </ThemeProvider>
     </Provider>
   );

@@ -2,8 +2,9 @@ import styled from "styled-components/native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../../infrastructure/theme/colors";
 import { Text } from "../../../components/typography/text.component";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const AccountBackground = styled.ImageBackground.attrs({
+export const LoginBackground = styled.ImageBackground.attrs({
   source: require("../../../../assets/home_bg.jpg"),
 })`
   flex: 1;
@@ -11,21 +12,21 @@ export const AccountBackground = styled.ImageBackground.attrs({
   justify-content: center;
 `;
 
-export const AccountCover = styled.View`
+export const LoginCover = styled.View`
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.3);
 `;
 
-export const AccountContainer = styled.View`
+export const LoginContainer = styled.View`
   background-color: rgba(255, 255, 255, 0.7);
   padding: ${(props) => props.theme.space[4]};
   margin-top: ${(props) => props.theme.space[2]};
 `;
 
 export const AuthButton = styled(Button).attrs({
-  color: colors.brand.primary,
+  color: colors.button.changeValue.primary,
 })`
   padding: ${(props) => props.theme.space[2]};
 `;
@@ -47,9 +48,9 @@ export const ErrorContainer = styled.View`
 `;
 
 export const AnimationWrapper = styled.View`
-  width: 100%;
-  height: 40%;
+  width: 50%;
+  height: 30%;
   position: absolute;
-  top: 30px;
+  top: 80px;
   padding: ${(props) => props.theme.space[2]};
 `;

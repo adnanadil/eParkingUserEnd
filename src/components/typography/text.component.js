@@ -50,6 +50,13 @@ const hourValueButton = (theme) => `
     color: ${theme.colors.bg.primary};
 `;
 
+const loginScreenButtonText = (theme) => `
+    font-family: ${theme.fonts.heading};
+    font-size: ${theme.fontSizes.label};
+    font-weight: ${theme.fontWeights.bold};
+    color: ${theme.colors.bg.primary};
+`;
+
 const variants = {
   title,
   body,
@@ -58,7 +65,8 @@ const variants = {
   error,
   hint,
   timeButtonText, 
-  hourValueButton
+  hourValueButton,
+  loginScreenButtonText
 };
 
 export const Text = styled.Text`

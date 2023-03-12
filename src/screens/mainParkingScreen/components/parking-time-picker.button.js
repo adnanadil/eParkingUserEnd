@@ -17,37 +17,20 @@ import moment from "moment/moment";
 // import "firebase/compat/firestore";
 
 import { app } from "../../../Utility/firebase.utils";
-import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { checkUserStatus, signInUser, signOutUser } from "../../../Utility/firebase.auth.utils";
 
 export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
   const callMePlease = () => {
-    const auth = getAuth(app);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        console.log("We have a user");
-        // ...
-      } else {
-        // User is signed out
-        // ...
-        console.log("NO user !!!");
-      }
-    });
-    createUserWithEmailAndPassword(auth, "addu@gmail.com", "password")
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("Sign up success !!!");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Sign up Fail !!!");
-        // ..
-      });
+    var no = checkUserStatus().then((u => u))
+    console.log(JSON.stringify(no, null, 2));
+    console.log(`hi: ${checkUserStatus().then((u => u))}`)
+    // signInUser("addu@gmail.com", "password")
+    // signOutUser()
   };
 
   const thisFunction = () => {

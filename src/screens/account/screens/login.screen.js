@@ -1,28 +1,64 @@
 import React, { useState, useContext } from "react";
 import { ActivityIndicator, Colors } from "react-native-paper";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 import {
-  AccountBackground,
-  AccountCover,
-  AccountContainer,
+  LoginBackground,
+  LoginCover,
+  LoginContainer,
   AuthButton,
   AuthInput,
   ErrorContainer,
   Title,
-} from "../components/account.styles";
+} from "../components/login.styles";
 import { Text } from "../../../components/typography/text.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
-import { AuthenticationContext } from "../../../services/authentication/authentication.context";
+import { app, auth } from "../../../Utility/firebase.utils";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  userSignedInAction,
+  signInProgressAction,
+  signInErrorAction,
+} from "../../../redux/firebaseAuth.slice";
+import { colors } from "../../../infrastructure/theme/colors";
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { onLogin, error, isLoading } = useContext(AuthenticationContext);
+  // const { onLogin, error, isLoading } = useContext(AuthenticationContext);
+
+  const isLoading = useSelector(
+    (state) => state.firebaseAuthSlice.signInProgress
+  );
+  const error = useSelector((state) => state.firebaseAuthSlice.signInError);
+
+  const dispatch = useDispatch();
+  const onLogin = (email, password) => {
+    dispatch(signInProgressAction(true));
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        dispatch(userSignedInAction(true));
+        dispatch(signInProgressAction(false));
+        console.log(`Sign in succeess ${user}`);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        dispatch(signInProgressAction(false));
+        dispatch(signInErrorAction(errorMessage));
+        console.log(`Hitting this end point`)
+      });
+  };
   return (
-    <AccountBackground>
-      <AccountCover />
-      <Title>Meals To Go</Title>
-      <AccountContainer>
+    <LoginBackground>
+      <LoginCover />
+      <Title>eParking</Title>
+      <LoginContainer>
         <AuthInput
           label="E-mail"
           value={email}
@@ -56,15 +92,15 @@ export const LoginScreen = ({ navigation }) => {
               Login
             </AuthButton>
           ) : (
-            <ActivityIndicator animating={true} color={Colors.blue300} />
+            <ActivityIndicator animating={true} color={colors.brand.primary} />
           )}
         </Spacer>
-      </AccountContainer>
+      </LoginContainer>
       <Spacer size="large">
         <AuthButton mode="contained" onPress={() => navigation.goBack()}>
           Back
         </AuthButton>
       </Spacer>
-    </AccountBackground>
+    </LoginBackground>
   );
 };

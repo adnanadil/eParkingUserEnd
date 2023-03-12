@@ -1,38 +1,44 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { TabNavigation } from "./tab.navigation";
-import { AccountNavigator } from "./account.navigator";
+import { LoginInNavigator } from "./login.navigator";
 
-import { AuthenticationContext } from "../../services/authentication/authentication.context";
+import { useDispatch, useSelector } from "react-redux";
+import { signInErrorAction, signUpErrorAction, userEmailAction, userSignedInAction, userUIDAction } from "../../redux/firebaseAuth.slice";
 
-import {app} from "../../Utility/firebase.utils"
+import { app, auth } from "../../Utility/firebase.utils";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-export const RootNavigation = () => {
-  const isAuthenticated = false;
+import { checkUserStatus } from "../../Utility/firebase.auth.utils";
 
-const auth = getAuth(app);
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
-    const uid = user.uid;
-    console.log("We have a user");
-    isAuthenticated = true
-    // ...
-    } else {
-    // User is signed out
-    // ...
-    console.log("NO user !!!");
-    isAuthenticated = false
-    }
-});
-  
+export const RootNavigation = () => {
+
+  const dispatch = useDispatch()
+
+  const isAuthenticated = useSelector((state) => state.firebaseAuthSlice.userSignedIn)
+
+  console.log(`He there ${checkUserStatus()}`);
+
+  useEffect(() => {
+    dispatch(signInErrorAction(""));
+    dispatch(signUpErrorAction(""));
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        dispatch(userSignedInAction(true));
+        dispatch(userUIDAction(user.uid));
+        dispatch(userEmailAction(user.email));
+      } else {
+        // User is signed out
+        // console.log("NO user !!! (Function)");
+      }
+    });
+  }, []);
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <TabNavigation /> : <AccountNavigator />}
+      {isAuthenticated ? <TabNavigation /> : <LoginInNavigator />}
     </NavigationContainer>
   );
 };
