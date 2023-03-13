@@ -75,7 +75,7 @@ export const RegisterScreen = ({ navigation }) => {
           autoCapitalize="none"
           onChangeText={(u) => setEmail(u)}
         />
-        <Spacer size="large">
+        <Spacer position="top" size="large">
           <AuthInput
             label="Password"
             value={password}

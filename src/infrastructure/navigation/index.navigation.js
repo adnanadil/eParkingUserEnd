@@ -16,7 +16,9 @@ export const RootNavigation = () => {
 
   const dispatch = useDispatch()
 
-  const isAuthenticated = useSelector((state) => state.firebaseAuthSlice.userSignedIn)
+  // const isAuthenticated = useSelector((state) => state.firebaseAuthSlice.userSignedIn)
+  const isAuthenticated = true
+  // HARDCODED
 
   console.log(`He there ${checkUserStatus()}`);
 

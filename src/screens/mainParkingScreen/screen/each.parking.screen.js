@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button } from "react-native";
+import { ScrollView } from "react-native";
+
 
 import { useSelector, useDispatch } from "react-redux";
 import { pushTimeSlotDetails } from "../../../redux/parkingSlice";
@@ -10,6 +12,7 @@ import { ParkingHoursPicker } from "../components/parking-hours.picker";
 import { ParkingCheckoutComponent } from "../components/parking-checkout";
 import { LoadingAvailability } from "../components/parking-checkout.styles";
 import moment from "moment/moment";
+import { updateCurrentlySelectedParkingLot } from "../../../redux/firestoreSlice";
 
 export const EachParkingScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -31,107 +34,33 @@ export const EachParkingScreen = ({ route, navigation }) => {
     showHoursPickerComponent = true;
   }
   const { parking } = route.params;
-  const [parkingTimeSlots, setParkingTimeSlots] = useState([]);
+
+  const convertTime = timeStr => {
+    const [time, modifier] = timeStr.split(' ');
+    let [hours, minutes,seconds] = time.split(':');
+    if (hours === '12') {
+       hours = '00';
+    }
+    if (modifier === 'PM') {
+       hours = parseInt(hours, 10) + 12;
+    }
+    return `${hours}`;
+ };
+
   useEffect(() => {
-    // console.log(`Parking ${parking.name}`);
-    // console.log(`Parking ${hiBoss}`);
     navigation.setOptions({
       title: parking.name,
     });
-    /*
-    let parkingTimeSlotsRecieved = [];
-    var unixTimestamp = Date.now();
-
-    var localDate = new Date(unixTimestamp).toLocaleString("en-US", {
-      localeMatcher: "best fit",
-      timeZoneName: "short",
-      timeStyle: "short",
-    });
-    
-    const currentHours = localDate.slice(0, 2);
-    var currentHoursInt = parseInt(currentHours);
-
-    var valueToPush = currentHoursInt;
-
-    var theTimeButtonsToShow = [];
-    for (let i = 0; i < 23; i++) {
-      if (valueToPush === 23) {
-        valueToPush = 0;
-        theTimeButtonsToShow.push(valueToPush);
-      } else {
-        theTimeButtonsToShow.push(++valueToPush);
-      }
-    }
-
-    theTimeButtonsToShow.forEach((time) => {
-      let timeInStraing = time.toString();
-      let timeDots = ":00";
-      let finalTimeToDisplay = timeInStraing.concat(timeDots);
-      parkingTimeSlotsRecieved.push(finalTimeToDisplay);
-    });
-
-    setParkingTimeSlots(parkingTimeSlotsRecieved);
-    */
-    // We will develop the logic here to get the timeSlots with other details such
-    // Time in string
-    // Time in Int
-    // Timestamp for the date
-
-    let parkingTimeSlotsRecieved = [];
-
-    // console.log(`............XXXXXXXXXXXXXXXXXXXXXX.........`);
-    var unixTimestamp_2 = Date.now();
-    var localDate_fromUnix = new Date(unixTimestamp_2).toLocaleString("en-GB", {
-      localeMatcher: "best fit",
-      timeZoneName: "short",
-    });
-
-    for (let i = 1; i < 24; i++) {
-      unixTimestamp_2 = unixTimestamp_2 + 3600000;
-      var localDate_fromUnix = new Date(unixTimestamp_2).toLocaleString(
-        "en-GB",
-        {
-          localeMatcher: "best fit",
-          timeZoneName: "short",
-        }
-      );
-      // console.log(`Complete Date: ${localDate_fromUnix}`);
-
-      var localTime = new Date(unixTimestamp_2).toLocaleString("en-US", {
-        localeMatcher: "best fit",
-        timeZoneName: "short",
-        timeStyle: "short",
-      });
-
-      const dateInString = localDate_fromUnix.slice(0, 10);
-      var timeStamp = moment(dateInString, "DD/MM/YYYY").unix();
-      // console.log(`This is the time stamp: ${timeStamp}`);
-
-      var localTime_24hrs = moment(localTime, ["h:mm A"]).format("HH:mm");
-      const timeInString = localTime_24hrs.slice(0, 2);
-      let timeDots_2 = ":00";
-      let finalTimeInString = timeInString.concat(timeDots_2);
-      // console.log(`Time value in string: ${finalTimeInString}`);
-
-      var eachTimeSlotWithDetail = {
-        timeSlotInString: finalTimeInString,
-        timeStampInt: timeStamp,
-        timeInInt: parseInt(timeInString),
-      };
-
-      dispatch(pushTimeSlotDetails(eachTimeSlotWithDetail));
-
-      parkingTimeSlotsRecieved.push(finalTimeInString);
-    }
-
-    setParkingTimeSlots(parkingTimeSlotsRecieved);
+    dispatch(updateCurrentlySelectedParkingLot(parking))
+    // console.log(parking)
   }, []);
 
   // const parkingTimeSlots = ["3PM", "4PM", "5PM", "6PM", "7PM"];
   return (
     <SafeArea>
       <ParkingInfoCard parking={parking} />
-      <ParkingTimePickerBar timeSlots={parkingTimeSlots} />
+      <ScrollView>
+      <ParkingTimePickerBar/>
       {showHoursPickerComponent && <ParkingHoursPicker></ParkingHoursPicker>}
       {/* {showCheckOutComponent && <LoadingAvailability></LoadingAvailability>} */}
       {searchComplete && <ParkingCheckoutComponent></ParkingCheckoutComponent>}
@@ -143,6 +72,7 @@ export const EachParkingScreen = ({ route, navigation }) => {
         // if not then we remove it.
       }
       {/* <Text>Hello there ${Object.keys(selectedTimeSlotArrayFromState).length}</Text> */}
+      </ScrollView>
     </SafeArea>
   );
 };

@@ -18,5 +18,5 @@ export const CreditCardInputComponent = ({ name, onSuccess, onError }) => {
       console.log("Credit card filled")
     }
   };
-  return <LiteCreditCardInput onChange={onChange} />;
+  return <CreditCardInput onChange={onChange} />;
 };

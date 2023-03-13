@@ -35,7 +35,7 @@ export const LoginOrRegisterScreen = ({ navigation }) => {
         >
           <Text variant="loginScreenButtonText">Login</Text>
         </AuthButton>
-        <Spacer size="large">
+        <Spacer  size="large">
           <AuthButton
             icon="email"
             mode="contained"

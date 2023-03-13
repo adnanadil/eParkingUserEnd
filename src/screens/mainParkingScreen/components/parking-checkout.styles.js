@@ -53,7 +53,7 @@ export const PayButton = styled(Button).attrs({
   align-self: center;
   padding: ${(props) => props.theme.space[2]};
   margin-bottom: 10;
-  margin-top: 10
+  margin-top: 10;
 `;
 export const ClearButton = styled(Button).attrs({
   color: colors.ui.error,
@@ -61,4 +61,9 @@ export const ClearButton = styled(Button).attrs({
   width: 80%;
   align-self: center;
   padding: ${(props) => props.theme.space[2]};
+`;
+
+export const TotalHolder = styled.View`
+  align-items: flex-start;
+  padding-left: ${(props) => props.theme.space[3]};
 `;

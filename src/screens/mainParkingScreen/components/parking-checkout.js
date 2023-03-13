@@ -1,7 +1,7 @@
 // This is the section that is below the time slot picker
 
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -18,6 +18,7 @@ import {
   PayButton,
   ClearButton,
   PaymentProcessing,
+  TotalHolder,
 } from "../components/parking-checkout.styles";
 import { updateBookingInProgress } from "../../../redux/parkingSlice";
 
@@ -61,7 +62,6 @@ export const ParkingCheckoutComponent = () => {
   return (
     <SafeArea>
       {isLoading && <PaymentProcessing />}
-      <ScrollView>
         <Spacer position="left" size="medium">
           <Spacer position="top" size="large">
             <Text>Parking Available</Text>
@@ -69,7 +69,7 @@ export const ParkingCheckoutComponent = () => {
         </Spacer>
         <NameInput
           disabled={bookingInProgress}
-          label="Name"
+          label="Enter Driver's Name"
           value={name}
           onChangeText={(t) => {
             setName(t);
@@ -88,18 +88,13 @@ export const ParkingCheckoutComponent = () => {
             />
           )}
         </Spacer>
+        <Spacer position="top" size="large"/>
+        <TotalHolder>
+          <Text variant="hint">Total Cost: 10 SAR</Text>
+          <Text variant="hint">Time Duration: 4 hours</Text>
+          <Text variant="hint">Time Slot: 3PM to 4PM</Text>
+        </TotalHolder>
         <Spacer position="top" size="xxl" />
-        {/* <Spacer position="top" size="large">
-          <ClearButton
-            disabled={isLoading}
-            icon="cart-off"
-            mode="contained"
-            onPress={clearCart}
-          >
-            Clear Cart
-          </ClearButton>
-        </Spacer> */}
-      </ScrollView>
       <PayButton
         disabled={isLoading}
         // icon="USD"

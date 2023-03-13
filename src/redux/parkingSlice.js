@@ -12,6 +12,7 @@ export const parkingSlice = createSlice({
     selectedTimeArray: [],
     hoursSelected: 1,
     currentlyAvailableTimeSlotsDetails: [],
+    generatedAllParkingSlots: false,
     searchPressed: false,
     searchCompleted: false,
     bookingInProgress: false,
@@ -56,6 +57,9 @@ export const parkingSlice = createSlice({
       );
       // state.currentlyAvailableTimeSlotsDetails = ["Show this brother"]
     },
+    updateGeneratedAllParkingSlots: (state, action) => {
+      state.generatedAllParkingSlots = action.payload;
+    },
     resetTimeSlotDetails: (state, action) => {
       state.currentlyAvailableTimeSlotsDetails = [];
     },
@@ -79,6 +83,7 @@ export const {
   increseHours,
   decreaseHours,
   pushTimeSlotDetails,
+  updateGeneratedAllParkingSlots,
   resetTimeSlotDetails,
   updateSearchPressed,
   updateSearchCompleted,

@@ -12,7 +12,6 @@ export const TimeSlotButtonSelected = styled(TouchableOpacity)`
   background-color: ${(props) => props.theme.colors.brand.primary};
   border-radius: 10;
   align-items: center;
-  align-items: center;
   justify-content: center;
 `;
 
@@ -23,7 +22,6 @@ export const TimeSlotButtonUnselected = styled(TouchableOpacity)`
   margin-top: 10;
   background-color: ${(props) => props.theme.colors.ui.secondary};
   border-radius: 10;
-  align-items: center;
   align-items: center;
   justify-content: center;
 `;
