@@ -52,6 +52,10 @@ export const ParkingHoursPicker = () => {
   const hoursSelected = useSelector(
     (state) => state.parkingSlice.hoursSelected
   );
+  
+  const maxPossibleBookingHours = useSelector(
+    (state) => state.parkingSlice.maxBookingHoursPossible
+  );
   const dispatch = useDispatch();
 
   const onPressForSearchButoon = () => {
@@ -69,7 +73,7 @@ export const ParkingHoursPicker = () => {
       </ValueButton>
       <Text variant="title">{hoursSelected}</Text>
       <ValueButton
-        onPress={() => dispatch(increseHours())}
+        onPress={() => dispatch(increseHours(maxPossibleBookingHours))}
         disabled={bookingInProgress}
       >
         <Text variant="hourValueButton">+</Text>

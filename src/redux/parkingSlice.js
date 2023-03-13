@@ -16,6 +16,11 @@ export const parkingSlice = createSlice({
     searchPressed: false,
     searchCompleted: false,
     bookingInProgress: false,
+    timeSlotPosition1: 0,
+    position1TimeStamp: 0,
+    timeSlotPosition2: 0,
+    position2TimeStamp: 0,
+    maxBookingHoursPossible: 1,
   },
 
   reducers: {
@@ -38,7 +43,7 @@ export const parkingSlice = createSlice({
       );
     },
     increseHours: (state, action) => {
-      if (state.hoursSelected < 6) {
+      if (state.hoursSelected < action.payload) {
         state.hoursSelected = state.hoursSelected + 1;
       }
     },
@@ -72,6 +77,21 @@ export const parkingSlice = createSlice({
     updateBookingInProgress: (state, action) => {
       state.bookingInProgress = action.payload;
     },
+    updateTimeSlotPosition1: (state, action) => {
+      state.timeSlotPosition1 = action.payload;
+    },
+    updatePosition1TimeStamp: (state, action) => {
+      state.position1TimeStamp = action.payload;
+    },
+    updateTimeSlotPosition2: (state, action) => {
+      state.timeSlotPosition2 = action.payload;
+    },
+    updatePosition2TimeStamp: (state, action) => {
+      state.position2TimeStamp = action.payload;
+    },
+    updateMaxBookingHoursPossible: (state, action) => {
+      state.maxBookingHoursPossible = action.payload;
+    },
   },
 });
 
@@ -88,7 +108,12 @@ export const {
   updateSearchPressed,
   updateSearchCompleted,
   updateBookingInProgress,
-  resetHours
+  resetHours,
+  updateTimeSlotPosition1,
+  updatePosition1TimeStamp,
+  updateTimeSlotPosition2,
+  updatePosition2TimeStamp,
+  updateMaxBookingHoursPossible
 } = parkingSlice.actions;
 
 export default parkingSlice.reducer;

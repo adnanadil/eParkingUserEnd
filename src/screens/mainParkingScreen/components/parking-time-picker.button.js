@@ -1,6 +1,12 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { timeSlotPicked } from "../../../redux/parkingSlice";
+import {
+  resetHours,
+  timeSlotPicked,
+  updateMaxBookingHoursPossible,
+  updatePosition1TimeStamp,
+  updateTimeSlotPosition1,
+} from "../../../redux/parkingSlice";
 import { timeSlotPickedArrayAction } from "../../../redux/parkingSlice";
 import { deletTimeSlotAction } from "../../../redux/parkingSlice";
 import { SafeArea } from "../../../Utility/SafeArea";
@@ -22,13 +28,22 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { checkUserStatus, signInUser, signOutUser } from "../../../Utility/firebase.auth.utils";
+import {
+  checkUserStatus,
+  signInUser,
+  signOutUser,
+} from "../../../Utility/firebase.auth.utils";
 
-export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
+export const ParkingIndividualTime = ({
+  timeSlot,
+  timeStampInt,
+  timeInInt,
+  position,
+}) => {
   const callMePlease = () => {
-    var no = checkUserStatus().then((u => u))
+    var no = checkUserStatus().then((u) => u);
     console.log(JSON.stringify(no, null, 2));
-    console.log(`hi: ${checkUserStatus().then((u => u))}`)
+    console.log(`hi: ${checkUserStatus().then((u) => u)}`);
     // signInUser("addu@gmail.com", "password")
     // signOutUser()
   };
@@ -107,6 +122,21 @@ export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
     }
   };
 
+  const buttonPressed = () => {
+    dispatch(timeSlotPicked(timeSlot));
+    dispatch(updateTimeSlotPosition1(position));
+    dispatch(updatePosition1TimeStamp(timeStampInt));
+
+    var hoursLeftForBooking = 0
+    for (i = position; i <= 23; i++) {
+      hoursLeftForBooking = hoursLeftForBooking + 1
+    }
+
+    dispatch(updateMaxBookingHoursPossible(hoursLeftForBooking))
+    dispatch(resetHours())
+
+  };
+
   return (
     <SafeArea>
       {thisTheSelectedTime ? (
@@ -114,7 +144,7 @@ export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
           disabled={false}
           // onPress={() => dispatch(timeSlotPicked(timeSlot))}
           // onPress={() => dispatch(deletTimeSlotAction(timeSlot))}
-          onPress={callMePlease}
+          // onPress={callMePlease}
           // onPress={() => console.log(JSON.stringify(organizations, null, 2))}
         >
           <Text center variant="timeButtonText" numberOfLines={3}>
@@ -125,7 +155,7 @@ export const ParkingIndividualTime = ({ timeSlot: timeSlot }) => {
         <TimeSlotButtonUnselected
           disabled={bookingInProgress}
           // onPress={pleaseDoThis}
-          onPress={() => dispatch(timeSlotPicked(timeSlot))}
+          onPress={buttonPressed}
           // onPress={() => dispatch(timeSlotPickedArrayAction(timeSlot))}
         >
           <Text center variant="timeButtonText" numberOfLines={3}>
