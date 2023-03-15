@@ -12,6 +12,10 @@ const defaultTextStyles = (theme) => `
 const title = (theme) => `
     font-size: ${theme.fontSizes.title};
 `;
+const alert = (theme) => `
+    font-size: ${theme.fontSizes.title};
+    text-align: center;
+`;
 
 const body = (theme) => `
     font-size: ${theme.fontSizes.body};
@@ -66,7 +70,8 @@ const variants = {
   hint,
   timeButtonText, 
   hourValueButton,
-  loginScreenButtonText
+  loginScreenButtonText,
+  alert
 };
 
 export const Text = styled.Text`

@@ -56,7 +56,7 @@ export const MainParkingNavigator = ({ route, navigation }) => {
         options={{
           header: () => null,
         }}
-        name="Parking"
+        name="Parkings"
         component={MainParikingScreen}
       />
       {/* <ParkingStack.Screen name="Indivdual Parking" component={IndividualParking} /> */}

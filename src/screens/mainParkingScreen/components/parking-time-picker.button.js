@@ -4,6 +4,7 @@ import {
   resetHours,
   timeSlotPicked,
   updateMaxBookingHoursPossible,
+  updatePosition1TimeInt,
   updatePosition1TimeStamp,
   updateTimeSlotPosition1,
 } from "../../../redux/parkingSlice";
@@ -126,6 +127,7 @@ export const ParkingIndividualTime = ({
     dispatch(timeSlotPicked(timeSlot));
     dispatch(updateTimeSlotPosition1(position));
     dispatch(updatePosition1TimeStamp(timeStampInt));
+    dispatch(updatePosition1TimeInt(timeInInt));
 
     var hoursLeftForBooking = 0
     for (i = position; i <= 23; i++) {

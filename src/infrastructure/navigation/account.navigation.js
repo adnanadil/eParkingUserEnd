@@ -41,7 +41,7 @@ export const AccountNavigator = ({ route, navigation }) => {
         options={{
           header: () => null,
         }}
-        name="Account"
+        name="Your Account"
         component={MainAccountsScreen}
       />
       <AccountStack.Screen name="Your Parkings" component={YourParkingScreen} />

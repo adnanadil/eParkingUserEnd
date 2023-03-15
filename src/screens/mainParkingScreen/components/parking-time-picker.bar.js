@@ -6,7 +6,7 @@ import { Text } from "../../../components/typography/text.component";
 
 import { ParkingIndividualTime } from "./parking-time-picker.button";
 import { useDispatch } from "react-redux";
-import { pushTimeSlotDetails } from "../../../redux/parkingSlice";
+import { pushTimeSlotDetails, resetTimeDetailsArray, resetTimeSlotArrayAction, resetTimeSlotDetails, timeSlotPickedArrayAction, updateTimeDetailsArray } from "../../../redux/parkingSlice";
 import moment from "moment/moment";
 
 
@@ -39,6 +39,9 @@ export const ParkingTimePickerBar = () => {
 }
  
   useEffect(() => {
+    dispatch(resetTimeSlotDetails());
+    dispatch(resetTimeSlotArrayAction());
+
     let parkingTimeSlotsRecieved = [];
     let tempParkingSlotsLocalArrayObject = [];
 
@@ -78,6 +81,8 @@ export const ParkingTimePickerBar = () => {
       };
 
       dispatch(pushTimeSlotDetails(eachTimeSlotWithDetail));
+      // dispatch(timeSlotPickedArrayAction(eachTimeSlotWithDetail));
+      // dispatch(updateTimeDetailsArray(eachTimeSlotWithDetail));
       tempParkingSlotsLocalArrayObject.push(eachTimeSlotWithDetail)
 
       parkingTimeSlotsRecieved.push(finalTimeInString);

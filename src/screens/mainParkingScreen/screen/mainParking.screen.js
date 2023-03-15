@@ -18,6 +18,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 import {
   resetHours,
+  resetTimeDetailsArray,
   resetTimeSlotDetails,
   timeSlotPicked,
   updateBookingInProgress,
@@ -25,10 +26,9 @@ import {
   updateSearchCompleted,
   updateSearchPressed,
 } from "../../../redux/parkingSlice";
-import { resetTimeSlotArrayAction } from "../../../redux/parkingSlice";
 
 import { useIsFocused } from "@react-navigation/native";
-import { clearCurrentlySelectedParkingLot, updateParkingLots, updateParkingLotsLoading } from "../../../redux/firestoreSlice";
+import { clearCurrentlySelectedParkingLot, updateParkingLots, updateParkingLotsLoading, updateParkingSlotsInChosenParkingLot } from "../../../redux/firestoreSlice";
 import { ActivityIndicator } from "react-native-paper";
 
 const parkings = [
@@ -62,6 +62,7 @@ export const MainParikingScreen = ({ navigation }) => {
   // const [parkingLotsLoading, updateParkingLotsLoading] = useState(false)
   const parkingLotsLoading = useSelector((state) => state.firestoreSlice.parkingLotsLoading)
   const parkingLots = useSelector((state) => state.firestoreSlice.parkingLots)
+  const selectedTimeRande = useSelector((state) => state.parkingSlice.selectedTimeArray)
 
   const getParkingLots = async () => {
     const q = query(collection(db, "parkingLots"));
@@ -69,9 +70,10 @@ export const MainParikingScreen = ({ navigation }) => {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       updateParkingLotsArrayOfObbjects(parkingLotsArrayOfObjects.push(doc.data()))
-      // console.log(doc.id, " => ", doc.data());
+      // console.log(doc.id, " => ", doc.data().parkingSlots);
     });
     // console.log(`We are done ${JSON.stringify(parkingLotsArrayOfObjects, null, 2)}`)
+    // console.log(`We are done ${parkingLotsArrayOfObjects}`)
     dispatch(updateParkingLotsLoading(false))
     dispatch(updateParkingLots(parkingLotsArrayOfObjects))
   };
@@ -86,14 +88,14 @@ export const MainParikingScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(timeSlotPicked(""));
-    dispatch(resetTimeSlotDetails());
     dispatch(updateSearchPressed(false));
     dispatch(updateSearchCompleted(false));
     dispatch(updateBookingInProgress(false));
     dispatch(resetHours());
     dispatch(updateGeneratedAllParkingSlots(false))
     dispatch(clearCurrentlySelectedParkingLot());
-    // dispatch(resetTimeSlotArrayAction());
+    // console.log(`Hitting this end point in main page`)
+    // console.log(`Hitting this end point in main page ${selectedTimeRande}`)
   }, [isFocused]);
 
  

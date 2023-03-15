@@ -16,11 +16,15 @@ export const parkingSlice = createSlice({
     searchPressed: false,
     searchCompleted: false,
     bookingInProgress: false,
+    parkingsSlotsFull: false,
     timeSlotPosition1: 0,
     position1TimeStamp: 0,
+    position1TimeInt: 0,
     timeSlotPosition2: 0,
     position2TimeStamp: 0,
+    position2TimeInt: 0,
     maxBookingHoursPossible: 1,
+    timeSlotToBook: ""
   },
 
   reducers: {
@@ -32,6 +36,9 @@ export const parkingSlice = createSlice({
         state.selectedTimeArray,
         action.payload
       );
+    },
+    updateTimeSlotPickedArray: (state, action) => {
+      state.selectedTimeArray = action.payload
     },
     resetTimeSlotArrayAction: (state, action) => {
       state.selectedTimeArray = [];
@@ -60,7 +67,12 @@ export const parkingSlice = createSlice({
         state.currentlyAvailableTimeSlotsDetails,
         action.payload
       );
-      // state.currentlyAvailableTimeSlotsDetails = ["Show this brother"]
+      // var newValueToUpdate = updateTheTimeSlotDetails(
+      //   state.currentlyAvailableTimeSlotsDetails,
+      //   action.payload
+      // );
+      // state.currentlyAvailableTimeSlotsDetails = newValueToUpdate
+      // state.currentlyAvailableTimeSlotsDetails = ["Show this brother", "and this"]
     },
     updateGeneratedAllParkingSlots: (state, action) => {
       state.generatedAllParkingSlots = action.payload;
@@ -74,6 +86,9 @@ export const parkingSlice = createSlice({
     updateSearchCompleted: (state, action) => {
       state.searchCompleted = action.payload;
     },
+    updateParkingsSlotsFull: (state, action) => {
+      state.parkingsSlotsFull = action.payload;
+    },
     updateBookingInProgress: (state, action) => {
       state.bookingInProgress = action.payload;
     },
@@ -83,14 +98,23 @@ export const parkingSlice = createSlice({
     updatePosition1TimeStamp: (state, action) => {
       state.position1TimeStamp = action.payload;
     },
+    updatePosition1TimeInt: (state, action) => {
+      state.position1TimeInt = action.payload;
+    },
     updateTimeSlotPosition2: (state, action) => {
       state.timeSlotPosition2 = action.payload;
     },
     updatePosition2TimeStamp: (state, action) => {
       state.position2TimeStamp = action.payload;
     },
+    updatePosition2TimeInt: (state, action) => {
+      state.position2TimeInt = action.payload;
+    },
     updateMaxBookingHoursPossible: (state, action) => {
       state.maxBookingHoursPossible = action.payload;
+    },
+    updateTimeSlotToBook: (state, action) => {
+      state.timeSlotToBook = action.payload;
     },
   },
 });
@@ -98,6 +122,7 @@ export const parkingSlice = createSlice({
 export const {
   timeSlotPicked,
   timeSlotPickedArrayAction,
+  updateTimeSlotPickedArray,
   deletTimeSlotAction,
   resetTimeSlotArrayAction,
   increseHours,
@@ -108,12 +133,16 @@ export const {
   updateSearchPressed,
   updateSearchCompleted,
   updateBookingInProgress,
+  updateParkingsSlotsFull,
   resetHours,
   updateTimeSlotPosition1,
   updatePosition1TimeStamp,
+  updatePosition1TimeInt,
   updateTimeSlotPosition2,
   updatePosition2TimeStamp,
-  updateMaxBookingHoursPossible
+  updatePosition2TimeInt,
+  updateMaxBookingHoursPossible,
+  updateTimeSlotToBook,
 } = parkingSlice.actions;
 
 export default parkingSlice.reducer;

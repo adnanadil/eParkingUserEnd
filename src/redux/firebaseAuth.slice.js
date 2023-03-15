@@ -12,7 +12,7 @@ export const firebaseAuthSlice = createSlice({
     signUpSuccess: false,
     signUpFail: false,
     signUpError: "",
-    userUID: "",
+    userUID: "test",
     userEmail: ""
   },
 
@@ -45,7 +45,7 @@ export const firebaseAuthSlice = createSlice({
       state.signUpError = action.payload;
     },
     userUIDAction: (state, action) => {
-      state.useDUIS = action.payload;
+      state.userUID = action.payload;
     },
     userEmailAction: (state, action) => {
       state.userEmail = action.payload;

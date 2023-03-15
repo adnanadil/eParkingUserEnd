@@ -31,7 +31,7 @@ export const LoadingAvailability = styled(ActivityIndicator).attrs({
   // color: Colors.blue300,
 })`
   position: absolute;
-  top: 50%;
+  top: 180;
   left: 45%;
   z-index: 999;
 `;

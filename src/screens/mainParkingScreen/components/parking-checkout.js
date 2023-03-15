@@ -11,6 +11,8 @@ import { SafeArea } from "../../../Utility/SafeArea";
 
 import { CreditCardInputComponent } from "../components/credit-card.component";
 
+import uuid from 'react-native-uuid';
+
 import {
   CartIconContainer,
   CartIcon,
@@ -21,31 +23,117 @@ import {
   TotalHolder,
 } from "../components/parking-checkout.styles";
 import { updateBookingInProgress } from "../../../redux/parkingSlice";
+import { collection, query, where, getDocs, setDoc, doc } from "firebase/firestore";
+import { db } from "../../../Utility/firebase.utils";
+import { ModalView } from "./modal";
 
-export const ParkingCheckoutComponent = () => {
+export const ParkingCheckoutComponent = ({navigation}) => {
   const dispatch = useDispatch();
-
+  
+  const parkingSlotsuID = useSelector(
+    (state) => state.firestoreSlice.parkingSlotsuID
+  );
   const bookingInProgress = useSelector(
     (state) => state.parkingSlice.bookingInProgress
+  );
+  const timeSlotPickedArray = useSelector(
+    (state) => state.parkingSlice.selectedTimeArray
+  );
+  const parkingSlot = useSelector(
+    (state) => state.parkingSlice.timeSlotToBook
+  );
+  const userID = useSelector(
+    (state) => state.firebaseAuthSlice.userUID
+  );
+  const parkingsSlotsFull = useSelector(
+    (state) => state.firebaseAuthSlice.parkingsSlotsFull
+  );
+  const costPerHour = useSelector(
+    (state) => state.firestoreSlice.costPerHour
+  );
+  const parkingSlotName = useSelector(
+    (state) => state.firestoreSlice.parkingSlotName
+  );
+  const position1TimeInt = useSelector(
+    (state) => state.parkingSlice.position1TimeInt
+  );
+  const position2TimeInt = useSelector(
+    (state) => state.parkingSlice.position2TimeInt
   );
   const [name, setName] = useState("");
   const [card, setCard] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, seterrorMessage] = useState("");
+  
+
+  useEffect(() => {
+    // Re-render in these conditions
+    console.log(`Take this: ${parkingSlot}`)
+    console.log(`Take this: ${timeSlotPickedArray}`)
+  }, [parkingSlot, parkingsSlotsFull, timeSlotPickedArray, error])
 
   const onPay = () => {
     setIsLoading(true);
+    setError(true);
     if (Object.keys(card).length === 0) {
       setIsLoading(false);
+      setError(true)
       //   navigation.navigate("CheckoutError", {
       //     error: "Please fill in a valid credit card",
       //   });
       console.log("Please fill in a valid credit card");
+      if (name == ""){
+        seterrorMessage("Please enter your name")
+      }else {
+        seterrorMessage("Please fill in a valid credit card")
+      }
+      
+      // setError(false)
       return;
     } else {
       dispatch(updateBookingInProgress(true));
       // Set it to false once you save it in Firestore... IA
+      if(!parkingsSlotsFull){
+        console.log(`Parking slots available`)
+        bookTheParking(parkingSlot)
+      }else {
+        console.log(`Parking slots Full`)
+      }
     }
   };
+
+  const bookTheParking = async (parkingSlot) => {
+    console.log(`Random Parking ${parkingSlot}`)
+    console.log(`Random ID ${uuid.v4()}`)
+    
+    // we will add a reservation for each of slots in the chosen range.
+    // If only 1 slot is chosen then our timeSlotPickedArray will be of size 1 
+
+    // console.log(`This is the array we will loop through ${JSON.stringify(localTimeSlotPickedArray, null, 2)}`)
+
+    timeSlotPickedArray.map((eachTimeEntryToBook) => {
+      firestoreFunctionToBook(eachTimeEntryToBook, parkingSlot)
+    })
+  } 
+
+  const firestoreFunctionToBook = async (eachTimeEntryToBook, parkingSlot) =>{
+      await setDoc(doc(db, `reservations-${parkingSlotsuID}`, uuid.v4()), {
+        parkingSlot: parkingSlot,
+        parkingLot: parkingSlotsuID,
+        timeInt: eachTimeEntryToBook.timeInInt,
+        timeStamp: eachTimeEntryToBook.timeStampInt,
+        timeString: eachTimeEntryToBook.timeSlotInString,
+        parkingID: uuid.v4(),
+        parkingSlotName: parkingSlotName,
+        userID: userID
+      });
+      // Navigate back to main page.... that is it no need of model.. 
+      dispatch(updateBookingInProgress(false));
+      setPaymentSuccess(true)
+
+  }
 
   // We can use this add the loader ...
   //   if (!cart.length || !restaurant) {
@@ -61,7 +149,8 @@ export const ParkingCheckoutComponent = () => {
 
   return (
     <SafeArea>
-      {isLoading && <PaymentProcessing />}
+      {isLoading ? (paymentSuccess ? <View></View> : <PaymentProcessing />) :
+        <View>
         <Spacer position="left" size="medium">
           <Spacer position="top" size="large">
             <Text>Parking Available</Text>
@@ -90,19 +179,23 @@ export const ParkingCheckoutComponent = () => {
         </Spacer>
         <Spacer position="top" size="large"/>
         <TotalHolder>
-          <Text variant="hint">Total Cost: 10 SAR</Text>
-          <Text variant="hint">Time Duration: 4 hours</Text>
-          <Text variant="hint">Time Slot: 3PM to 4PM</Text>
+          <Text variant="hint">{`Total Cost: ${costPerHour} X ${timeSlotPickedArray.length} = ${costPerHour*(timeSlotPickedArray.length)} SAR`}</Text>
+          <Text variant="hint">{`Time Duration: ${timeSlotPickedArray.length} hours`}</Text>
+          <Text variant="hint">{`Time Slot: ${position1TimeInt}:00 to ${position2TimeInt + 1}:00`}</Text>
         </TotalHolder>
         <Spacer position="top" size="xxl" />
+      {error ? <Text variant="error">{errorMessage}</Text> : <View></View>}
       <PayButton
         disabled={isLoading}
         // icon="USD"
         mode="contained"
         onPress={onPay}
       >
-        Book Parking: 10 SAR
+        {`Book Parking: ${costPerHour*(timeSlotPickedArray.length)} SAR`}
       </PayButton>
+        </View>
+      }
+      {paymentSuccess && <ModalView showModel={true} navigation= {navigation}></ModalView>}
     </SafeArea>
   );
 };

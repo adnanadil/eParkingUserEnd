@@ -6,6 +6,10 @@ export const firestoreSlice = createSlice({
     parkingLots: [],
     parkingLotsLoading: true,
     currentlySelectedParkingLot: [],
+    parkingSlotsInChosenParkingLot: [],
+    parkingSlotsuID: "",
+    parkingSlotName: "",
+    costPerHour: 1
   },
 
   reducers: {
@@ -21,6 +25,18 @@ export const firestoreSlice = createSlice({
     clearCurrentlySelectedParkingLot: (state, action) => {
         state.currentlySelectedParkingLot = [];
     },
+    updateParkingSlotsInChosenParkingLot: (state, action) => {
+        state.parkingSlotsInChosenParkingLot = action.payload;
+    },
+    updateParkingSlotsuID: (state, action) => {
+        state.parkingSlotsuID = action.payload;
+    },
+    updateParkingSlotName: (state, action) => {
+        state.parkingSlotName = action.payload;
+    },
+    updateParkingCostPerHour: (state, action) => {
+      state.costPerHour = action.payload;
+    },
   },
 });
 
@@ -28,7 +44,11 @@ export const {
     updateParkingLots,
     updateParkingLotsLoading,
     updateCurrentlySelectedParkingLot,
-    clearCurrentlySelectedParkingLot
+    clearCurrentlySelectedParkingLot,
+    updateParkingSlotsInChosenParkingLot,
+    updateParkingSlotsuID,
+    updateParkingCostPerHour,
+    updateParkingSlotName
 } = firestoreSlice.actions;
 
 export default firestoreSlice.reducer;
