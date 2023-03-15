@@ -22,13 +22,17 @@ export const YourParkingScreen = ({ navigation }) => {
           title="Mall of Dahran"
           description="Parking Slop:P1 - 3PM"
           left={(props) => <List.Icon {...props} color="black" icon="car" />}
-          onPress={() => navigation.navigate("QR Code")}
+          onPress={() => navigation.navigate("QR Code", {
+                  booking: "item",
+                })}
         />
         <YourParkingItem
           title="Dammam Airport"
           description="Parking Slop:Z13 - 8AM"
           left={(props) => <List.Icon {...props} color="black" icon="car" />}
-          onPress={() => navigation.navigate("QR Code")}
+          onPress={() => navigation.navigate("QR Code", {
+                  booking: "item",
+                })}
         />
       </List.Section>
     </SafeArea>

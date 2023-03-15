@@ -119,15 +119,17 @@ export const ParkingCheckoutComponent = ({navigation}) => {
   } 
 
   const firestoreFunctionToBook = async (eachTimeEntryToBook, parkingSlot) =>{
-      await setDoc(doc(db, `reservations-${parkingSlotsuID}`, uuid.v4()), {
+    var uuidForParking = uuid.v4()
+      await setDoc(doc(db, `reservations-${parkingSlotsuID}`, uuidForParking), {
         parkingSlot: parkingSlot,
         parkingLot: parkingSlotsuID,
         timeInt: eachTimeEntryToBook.timeInInt,
         timeStamp: eachTimeEntryToBook.timeStampInt,
         timeString: eachTimeEntryToBook.timeSlotInString,
-        parkingID: uuid.v4(),
+        parkingID: uuidForParking,
         parkingSlotName: parkingSlotName,
-        userID: userID
+        userID: userID,
+        userName: name
       });
       // Navigate back to main page.... that is it no need of model.. 
       dispatch(updateBookingInProgress(false));

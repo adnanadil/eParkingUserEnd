@@ -7,6 +7,7 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { View, Text } from "react-native";
+import { QRcodeScreen } from "../../screens/main.account.screen/screen/QRcode.screen";
 
 
 const YourParkings = () => {
@@ -45,7 +46,7 @@ export const AccountNavigator = ({ route, navigation }) => {
         component={MainAccountsScreen}
       />
       <AccountStack.Screen name="Your Parkings" component={YourParkingScreen} />
-      <AccountStack.Screen name="QR Code" component={CameraScreen} />
+      <AccountStack.Screen name="QR Code" component={QRcodeScreen} />
     </AccountStack.Navigator>
   );
 };
