@@ -46,6 +46,7 @@ export const YourParkingScreen = ({ navigation }) => {
   );
   const [parkingSlots, updateParkingSlots] = useState([]);
   const [timeStamp1, updateTimeStamp1] = useState("");
+  const [currentTimeHour, updateCurrentTimeHour] = useState("");
   const [currentDate, updateCurrentDate] = useState("");
   const [timeStamp2, updateTimeStamp2] = useState("");
   const [bookings, setBookings] = useState([]);
@@ -86,11 +87,12 @@ export const YourParkingScreen = ({ navigation }) => {
   const getTheBookedParkings = async (itemValue) => {
     console.log(`We will work on getting the parking for ${itemValue}`);
     console.log(`Today ${timeStamp1}`);
+    console.log(`Now Hours: ${currentTimeHour}`);
     console.log(`For user ${currentUserID}`);
     const q = query(
       collection(db, `reservations-${itemValue}`),
       where("timeStamp", "==", timeStamp1),
-      // where("timeStamp", "==", timeStamp2),
+      where("timeInt", ">=", currentTimeHour),
       where("userID", "==", currentUserID)
     );
 
@@ -158,7 +160,7 @@ export const YourParkingScreen = ({ navigation }) => {
       const timeInString = localTime_24hrs.slice(0, 2);
       let timeDots_2 = ":00";
       let finalTimeInString = timeInString.concat(timeDots_2);
-      // console.log(`Time value in string: ${finalTimeInString}`);
+      console.log(`Time value in string: ${finalTimeInString}`);
 
       var eachTimeSlotWithDetail = {
         timeSlotInString: finalTimeInString,
@@ -169,6 +171,19 @@ export const YourParkingScreen = ({ navigation }) => {
 
       tempParkingSlotsLocalArrayObject.push(eachTimeSlotWithDetail);
     }
+
+    var unixTimestamp_3 = Date.now();
+    var localDate_fromUnix_2 = new Date(unixTimestamp_3).toLocaleString(
+      "en-US",
+      {
+        localeMatcher: "best fit",
+        timeZoneName: "short",
+      }
+    );
+    var currentTimeToConvert = localDate_fromUnix_2.slice(11, 22);
+    var currentHoursIn24hours = convertTime(currentTimeToConvert);
+    console.log(`Current Time !!! ${currentHoursIn24hours}`)
+    updateCurrentTimeHour(parseInt(currentHoursIn24hours))
 
     updateParkingSlots(tempParkingSlotsLocalArrayObject);
     getTheTimeStampsString(tempParkingSlotsLocalArrayObject);
@@ -206,11 +221,14 @@ export const YourParkingScreen = ({ navigation }) => {
     // setParkingLotSelectedName(parkingLots[itemIndex].name);
     if (itemIndex ==0){
       setParkingLotSelectedName("Choose A Parking Slot");
+      setShowLoader(false)
+      setBookingAvailable(false)
+     setLoading(!loading);
     }else {
       setParkingLotSelectedName(parkingLotsWithAdded[itemIndex].name);
+      getTheBookedParkings(itemValue);
     }
     // Search For Bookings.
-    getTheBookedParkings(itemValue);
     setShowLoader(true)
   };
 
