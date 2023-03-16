@@ -10,7 +10,7 @@ import { ParkingInfoCard } from "../components/parking-info-card.component";
 import { ParkingTimePickerBar } from "../components/parking-time-picker.bar";
 import { ParkingHoursPicker } from "../components/parking-hours.picker";
 import { ParkingCheckoutComponent } from "../components/parking-checkout";
-import { LoadingAvailability } from "../components/parking-checkout.styles";
+import { LoadingAvailability, PaymentProcessing } from "../components/parking-checkout.styles";
 import moment from "moment/moment";
 import styled from "styled-components/native";
 

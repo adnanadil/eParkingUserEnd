@@ -15,14 +15,14 @@ import { useSelector } from "react-redux";
 export const QRcodeScreen = ({ route, navigation }) => {
   const { booking } = route.params;
 
-//   const parkingLotID = booking.parkingLot
-//   const parkingID = booking.parkingID
-const parkingLotID = "gLqJBzLLQe4QSYC3o4Eo"
-const parkingID = "179f5a77-77dd-4436-aef3-1562f13e047c"
+    const parkingLotID = booking.parkingLot
+    const parkingID = booking.parkingID
+    // const parkingLotID = "DggU5M3HtESO4PLVSGTz"
+    // const parkingID = "043ce246-6f1b-4870-b5e5-e6a9096e8061"
   
 
   const delButtonPressed = () => {
-    //   console.log(`Carry out the del operation in ${parkingLotID} of ${parkingUID}`)
+      console.log(`Carry out the del operation in ${parkingLotID} of ${parkingID}`)
       delTheBooking()
   }
 

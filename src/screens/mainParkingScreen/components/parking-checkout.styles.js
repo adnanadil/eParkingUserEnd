@@ -22,7 +22,7 @@ export const PaymentProcessing = styled(ActivityIndicator).attrs({
   position: absolute;
   top: 50%;
   left: 35%;
-  z-index: 999;
+  z-index: 990;
 `;
 
 export const LoadingAvailability = styled(ActivityIndicator).attrs({
