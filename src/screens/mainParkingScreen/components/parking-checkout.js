@@ -9,6 +9,7 @@ import { Text } from "../../../components/typography/text.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
 import { SafeArea } from "../../../Utility/SafeArea";
 
+// I removed this as this was causing ios to crash the cc
 import { CreditCardInputComponent } from "../components/credit-card.component";
 
 import uuid from 'react-native-uuid';
@@ -166,6 +167,7 @@ export const ParkingCheckoutComponent = ({navigation}) => {
             setName(t);
           }}
         />
+        
         <Spacer position="top" size="large">
           {name.length > 0 && !bookingInProgress && (
             <CreditCardInputComponent

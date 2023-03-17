@@ -10,8 +10,8 @@ import {
 import { View, Text } from "react-native";
 
 /*
-import {io} from "socket.io-client";
-const socket = io.connect("http://socket-io-server-utb-tele-bot.herokuapp.com");
+`import {io} from "socket.io-client";
+const socket = io.connect("http://socket-io-server-utb-tele-bot.herokuapp.com");`
 // const socket = io('http://socket-io-server-utb-tele-bot.herokuapp.com', {transports: ['websocket']});
 
 const emitMessage = () => {
