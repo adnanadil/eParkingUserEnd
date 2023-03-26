@@ -46,6 +46,9 @@ export const ParkingCheckoutComponent = ({navigation}) => {
   const userID = useSelector(
     (state) => state.firebaseAuthSlice.userUID
   );
+  const userEmail = useSelector(
+    (state) => state.firebaseAuthSlice.userEmail
+  );
   const parkingsSlotsFull = useSelector(
     (state) => state.firebaseAuthSlice.parkingsSlotsFull
   );
@@ -130,7 +133,8 @@ export const ParkingCheckoutComponent = ({navigation}) => {
         parkingID: uuidForParking,
         parkingSlotName: parkingSlotName,
         userID: userID,
-        userName: name
+        userName: name,
+        userEmail: userEmail
       });
       // Navigate back to main page.... that is it no need of model.. 
       dispatch(updateBookingInProgress(false));
