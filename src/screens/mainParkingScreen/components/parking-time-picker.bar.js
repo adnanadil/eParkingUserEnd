@@ -51,6 +51,8 @@ export const ParkingTimePickerBar = () => {
       timeZoneName: "short",
     });
 
+    console.log(`Show this date ${localDate_fromUnix}`)
+
     for (let i = 1; i < 24; i++) {
       unixTimestamp_2 = unixTimestamp_2 + 3600000;
       var localDate_fromUnix = new Date(unixTimestamp_2).toLocaleString(
@@ -77,7 +79,8 @@ export const ParkingTimePickerBar = () => {
         timeSlotInString: finalTimeInString,
         timeStampInt: timeStamp,
         timeInInt: parseInt(timeInString),
-        position: i
+        position: i,
+        date: dateInString
       };
 
       dispatch(pushTimeSlotDetails(eachTimeSlotWithDetail));

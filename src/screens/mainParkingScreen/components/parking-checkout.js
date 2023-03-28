@@ -134,7 +134,8 @@ export const ParkingCheckoutComponent = ({navigation}) => {
         parkingSlotName: parkingSlotName,
         userID: userID,
         userName: name,
-        userEmail: userEmail
+        userEmail: userEmail,
+        date: eachTimeEntryToBook.date
       });
       // Navigate back to main page.... that is it no need of model.. 
       dispatch(updateBookingInProgress(false));
