@@ -73,6 +73,7 @@ export const YourParkingScreen = ({ navigation }) => {
     );
     // setParkingLotsLocal(parkingSlots)
     console.log(`Hello there: ${parkingLotsWithAdded}`)
+    // console.log(parkingLotsWithAdded)
     getTheTimeStamps();
   }, []);
 
@@ -149,13 +150,17 @@ export const YourParkingScreen = ({ navigation }) => {
         }
       );
 
-      const dateInString = localDate_fromUnix.slice(0, 10);
+      const timeStringSplitArray = localDate_fromUnix.split(" ")
+
+      // const dateInString = localDate_fromUnix.slice(0, 10);
+      const dateInString = timeStringSplitArray[0];
       updateCurrentDate(dateInString)
       var timeStamp = moment(dateInString, "MM/DD/YYYY").unix();
       // console.log(`Today's stamp ${timeStamp}`)
 
       // console.log(`Time Value is: ${localDate_fromUnix.slice(11,22)}`);
-      var sendToGet_24hrs = localDate_fromUnix.slice(11, 22);
+      // var sendToGet_24hrs = localDate_fromUnix.slice(11, 22);
+      var sendToGet_24hrs = timeStringSplitArray[1] + " " + timeStringSplitArray[2] ;
       localTime_24hrs = convertTime(sendToGet_24hrs);
       const timeInString = localTime_24hrs.slice(0, 2);
       let timeDots_2 = ":00";
@@ -180,7 +185,9 @@ export const YourParkingScreen = ({ navigation }) => {
         timeZoneName: "short",
       }
     );
-    var currentTimeToConvert = localDate_fromUnix_2.slice(11, 22);
+    const timeStringSplitArray_2 = localDate_fromUnix_2.split(" ")
+    // var currentTimeToConvert = localDate_fromUnix_2.slice(11, 22);
+    var currentTimeToConvert = timeStringSplitArray_2[1] + " " + timeStringSplitArray_2[2];
     var currentHoursIn24hours = convertTime(currentTimeToConvert);
     console.log(`Current Time !!! ${currentHoursIn24hours}`)
     updateCurrentTimeHour(parseInt(currentHoursIn24hours))

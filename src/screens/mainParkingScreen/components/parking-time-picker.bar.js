@@ -65,13 +65,13 @@ export const ParkingTimePickerBar = () => {
 
       let arrOfTime = localDate_fromUnix.split(' ')
     
-      const dateInString = localDate_fromUnix.slice(0, 10);
+      // const dateInString = localDate_fromUnix.slice(0, 10);
       // var timeStamp = moment(dateInString, "MM/DD/YYYY").unix();
       var timeStamp = moment(arrOfTime[0], "MM/DD/YYYY").unix();
       // console.log(`Today's stamp ${timeStamp}`)
       
       // console.log(`Time Value is: ${localDate_fromUnix.slice(11,22)}`);
-      var sendToGet_24hrs = localDate_fromUnix.slice(11,22)
+      // var sendToGet_24hrs = localDate_fromUnix.slice(11,22)
       // localTime_24hrs = convertTime(sendToGet_24hrs)
       localTime_24hrs = convertTime(arrOfTime[1] + " " + arrOfTime[2])
       const timeInString = localTime_24hrs.slice(0, 2);
