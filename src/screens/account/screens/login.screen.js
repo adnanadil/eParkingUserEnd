@@ -68,6 +68,8 @@ export const LoginScreen = ({ navigation }) => {
           const errorMessage = error.message;
           dispatch(signInErrorAction(errorMessage));
         });
+    }else if (email === "") {
+      dispatch(signInErrorAction("Please enter you email address"));
     }
   }
 
