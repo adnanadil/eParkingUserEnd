@@ -66,6 +66,7 @@ export const ParkingTimePickerBar = () => {
       let arrOfTime = localDate_fromUnix.split(' ')
     
       // const dateInString = localDate_fromUnix.slice(0, 10);
+      const dateInString = arrOfTime[0];
       // var timeStamp = moment(dateInString, "MM/DD/YYYY").unix();
       var timeStamp = moment(arrOfTime[0], "MM/DD/YYYY").unix();
       // console.log(`Today's stamp ${timeStamp}`)

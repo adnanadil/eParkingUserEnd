@@ -12,8 +12,20 @@ import {
   AnimationWrapper,
 } from "../components/login.styles";
 import { Text } from "../../../components/typography/text.component";
+import { useFocusEffect } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { signInErrorAction } from "../../../redux/firebaseAuth.slice";
 
 export const LoginOrRegisterScreen = ({ navigation }) => {
+
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(signInErrorAction(""))
+    }, [])
+  );
+
   return (
     <LoginBackground>
       <LoginCover />

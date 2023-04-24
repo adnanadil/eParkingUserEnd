@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ActivityIndicator, Colors } from "react-native-paper";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 import {
   LoginBackground,
@@ -23,6 +23,7 @@ import {
   signInErrorAction,
 } from "../../../redux/firebaseAuth.slice";
 import { colors } from "../../../infrastructure/theme/colors";
+import { TouchableOpacity } from "react-native";
 
 export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -51,9 +52,26 @@ export const LoginScreen = ({ navigation }) => {
         const errorMessage = error.message;
         dispatch(signInProgressAction(false));
         dispatch(signInErrorAction(errorMessage));
-        console.log(`Hitting this end point`)
+        console.log(`Hitting this end point`);
       });
   };
+
+  const resetPasswordPressed = () => {
+    if(email !== ""){
+      const auth = getAuth();
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          dispatch(signInErrorAction("password reset link sent to email"));
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          dispatch(signInErrorAction(errorMessage));
+        });
+    }
+  }
+
+
   return (
     <LoginBackground>
       <LoginCover />
@@ -95,6 +113,9 @@ export const LoginScreen = ({ navigation }) => {
             <ActivityIndicator animating={true} color={colors.brand.primary} />
           )}
         </Spacer>
+        <TouchableOpacity onPress={resetPasswordPressed}>
+          <Text style={{textAlignVertical: "center",textAlign: "center", "color":"blue"}}>Reset Password</Text>
+        </TouchableOpacity>
       </LoginContainer>
       <Spacer size="large">
         <AuthButton mode="contained" onPress={() => navigation.goBack()}>
