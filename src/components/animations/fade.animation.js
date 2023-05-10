@@ -1,3 +1,7 @@
+// We are defining an animation component which is wrapped across components which we want to animate 
+// instead of create the animation for each component that we need to animate we have this component which 
+// once wrapped across a component will help in animating it.  
+
 import React, { useRef, useEffect } from "react";
 import { Animated } from "react-native";
 

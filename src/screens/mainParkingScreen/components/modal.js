@@ -1,10 +1,14 @@
+// Models are popups that are displayed on the app. we use this to show that a booking is complete 
+// and once the booking is complete we then we to the main page using the navigation props sent to the 
+// parkingCheckout component from the eachParking screen basically passing the props to the children
+
 import React, {useState} from 'react';
 import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
 
 export const ModalView = ({showModel, navigation}) => {
   const [modalVisible, setModalVisible] = useState(showModel);
-//   const [modalVisible, setModalVisible] = useState(false);
 
+// When ok is pressed we go back to the screen to see all the parking lots
 const modalButtonPressed = () => {
     setModalVisible(!modalVisible)
     navigation.navigate("Parkings")
@@ -25,18 +29,12 @@ const modalButtonPressed = () => {
             <Text style={styles.modalText}>Booking Confirmed</Text>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-            //   onPress={() => setModalVisible(!modalVisible)}>
               onPress={modalButtonPressed}>
               <Text style={styles.textStyle}>Done</Text>
             </Pressable>
           </View>
         </View>
       </Modal>
-      {/* <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable> */}
     </View>
   );
 };

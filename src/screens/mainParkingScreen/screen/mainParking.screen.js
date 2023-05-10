@@ -1,3 +1,12 @@
+// This more like that main page of the application, it is the first page which is shown by the 
+// mainParkings stack navigation under the tab Navigation 
+
+// In a nutshell this screen gets all the parking lots and their details and displays it in a card 
+// view and these cards are placed in a list view to have the ability to scroll through the various 
+// parking lots.
+// Once a card is clicked a new page called the EachParkingScreen is opened and it allows the user to 
+// making a booking for the selected parking lot. 
+
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 
@@ -8,8 +17,6 @@ import { FadeInView } from "../../../components/animations/fade.animation";
 import { ParkingList } from "../components/parking-list.styles";
 import { ParkingInfoCard } from "../components/parking-info-card.component";
 
-import styled from "styled-components/native";
-
 import { PaymentProcessing } from "../components/parking-checkout.styles";
 
 import { db } from "../../../Utility/firebase.utils";
@@ -18,8 +25,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 import {
   resetHours,
-  resetTimeDetailsArray,
-  resetTimeSlotDetails,
   timeSlotPicked,
   updateBookingInProgress,
   updateGeneratedAllParkingSlots,
@@ -29,62 +34,37 @@ import {
 
 import { useIsFocused } from "@react-navigation/native";
 import { clearCurrentlySelectedParkingLot, updateParkingLots, updateParkingLotsLoading, updateParkingSlotsInChosenParkingLot } from "../../../redux/firestoreSlice";
-import { ActivityIndicator } from "react-native-paper";
 
-const parkings = [
-  {
-    name: "Prince Mohammed Bin Fahd University",
-    photo:
-      "https://www.pmu.edu.sa/Attachments/Life_pmu/images/Gallery/PMU_History/PMU_History/fullscreen/17.jpg",
-  },
-  {
-    name: "Mall Of Dhahran",
-    photo:
-      "https://www.biztoday.news/wp-content/uploads/2022/06/Mall-of-Dhahran-reopens-to-the-public.jpeg",
-  },
-  {
-    name: "Othaim Mall",
-    photo:
-      "https://media.safarway.com/content/98af57b2-698b-464e-ada5-5f37e291c55c_sm.jpg",
-  },
-  {
-    name: "Ithra",
-    photo:
-      "https://img.theculturetrip.com/wp-content/uploads/2019/01/rexfeatures_10035951b.jpg",
-  },
-];
 
 export const MainParikingScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
   const [parkingLotsArrayOfObjects, updateParkingLotsArrayOfObbjects] = useState([])
-  // const [parkingLotsLoading, updateParkingLotsLoading] = useState(false)
   const parkingLotsLoading = useSelector((state) => state.firestoreSlice.parkingLotsLoading)
   const parkingLots = useSelector((state) => state.firestoreSlice.parkingLots)
-  const selectedTimeRande = useSelector((state) => state.parkingSlice.selectedTimeArray)
 
+  // We use this function to get all the parking lots
   const getParkingLots = async () => {
     const q = query(collection(db, "parkingLots"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
       updateParkingLotsArrayOfObbjects(parkingLotsArrayOfObjects.push(doc.data()))
-      // console.log(doc.id, " => ", doc.data().parkingSlots);
     });
-    // console.log(`We are done ${JSON.stringify(parkingLotsArrayOfObjects, null, 2)}`)
-    // console.log(`We are done ${parkingLotsArrayOfObjects}`)
     dispatch(updateParkingLotsLoading(false))
     dispatch(updateParkingLots(parkingLotsArrayOfObjects))
   };
 
+  // Called with component (screen) mounts
   useEffect(() => {
     getParkingLots()
   }, []);
 
 
 
-  // We use this in order to reset the time slot if the user moves back.
+  // We use this in order to reset the time slot if the user moves back to this screen 
+  // from the screen which allows them to make the booking, basically we are resetting 
+  // the redux state values so that it does not use the old state values... 
   const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(timeSlotPicked(""));
@@ -94,18 +74,19 @@ export const MainParikingScreen = ({ navigation }) => {
     dispatch(resetHours());
     dispatch(updateGeneratedAllParkingSlots(false))
     dispatch(clearCurrentlySelectedParkingLot());
-    // console.log(`Hitting this end point in main page`)
-    // console.log(`Hitting this end point in main page ${selectedTimeRande}`)
   }, [isFocused]);
 
  
 
+  // Here wer render the different elements of the page .. if the parking lots are still being 
+  // downloaded from the sever we show the spinner else we show the ParkingList styled component of type list
+  // In the list view we render each card, add a touch functionality to move to the booking page and also add 
+  // an animation to beautify the app
   return (
     <SafeArea>
       {parkingLotsLoading ? <PaymentProcessing></PaymentProcessing>
       :
       <ParkingList
-        // data={parkings}
         data={parkingLots}
         renderItem={({ item }) => {
           return (
@@ -118,7 +99,6 @@ export const MainParikingScreen = ({ navigation }) => {
             >
               <Spacer position="bottom" size="large">
                 <FadeInView>
-                  {/* <ParkingInfoCard parking={item} /> */}
                   <ParkingInfoCard parking={item} />
                 </FadeInView>
               </Spacer>

@@ -1,8 +1,13 @@
+// This is the UI which allows the user to select the number of hours they would like to 
+// make a booking for 
+
+// This is also the components which has the logic for looking into the database if we have 
+// a parking slot at the selected time and for the selected duration. 
+
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 
 import { colors } from "../../../infrastructure/theme/colors";
-import { TouchableOpacity } from "react-native";
 import { Text } from "../../../components/typography/text.component";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -13,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   decreaseHours,
   increseHours,
-  timeSlotPickedArrayAction,
   updateParkingsSlotsFull,
   updatePosition2TimeInt,
   updatePosition2TimeStamp,
@@ -24,9 +28,10 @@ import {
   updateTimeSlotToBook
 } from "../../../redux/parkingSlice";
 
-
+// Used to generate random IDs
 import uuid from 'react-native-uuid';
 
+// We have defined a few simple components we would be using in this component 
 const Holder = styled.View`
   flex-direction: row;
   justify-content: space-between;
@@ -54,14 +59,12 @@ const SearchButton = styled.TouchableOpacity`
   border-radius: 10;
 `;
 
+// Here is the main function which has the logic to look for empty slots and to display the 
+// UI to set the time of the booking. 
 export const ParkingHoursPicker = () => {
   const bookingInProgress = useSelector(
     (state) => state.parkingSlice.bookingInProgress
   );
-  const searchPressed = useSelector(
-    (state) => state.parkingSlice.searchPressed
-  );
-
   const hoursSelected = useSelector(
     (state) => state.parkingSlice.hoursSelected
   );
@@ -113,8 +116,9 @@ export const ParkingHoursPicker = () => {
   const dispatch = useDispatch();
 
   var pos2 = 0;
-  var TimeSlectedArray = [];
 
+  // we re-render and run the functions in the useEffect if either the time slot is changed
+  // or the hoursSelected is changed
   useEffect(() => {
     pos2 = pos1 + (hoursSelected-1);
     dispatch(updateTimeSlotPosition2(pos2))
@@ -123,6 +127,9 @@ export const ParkingHoursPicker = () => {
     getTheTimeSlectedArray()
   }, [hoursSelected, timeSelected])
 
+  // This is the function which runs when we press the search icon and it checks 
+  // in the database if we have available parking spots based on the time and hours 
+  // the parking needs to be booked for.  
   const onPressForSearchButoon = () => {
     dispatch(updateSearchPressed(true));
     dispatch(updateSearchCompleted(false))
@@ -132,19 +139,21 @@ export const ParkingHoursPicker = () => {
   const getTheTimeSlectedArray =() => {
     
     var selectedTimeArrayLocal = []
-
+    // Pos1 is the position of the time slot that is selected from this we will get 
+    // Pos2 which is the time slot until when the parking is needed. If the current time is 
+    // 8 and the user choose a time slot of 9 then Pos1 is 1 and if the users choose three hours
+    // the Pos2 should be 4 this logic is in the use effect now we are looping through and saving the 
+    // time slots that match the positions from 1 to 4 for our example. 
     for (i = pos1; i <= pos2; i++){
        selectedTimeArrayLocal.push(timeSlotsDetails.find( 
         eachItem => eachItem.position === i))
     }
 
-    // dispatch(timeSlotPickedArrayAction(selectedTimeArrayLocal))
     dispatch(updateTimeSlotPickedArray(selectedTimeArrayLocal))
     updateLocalTimeSlotPickedArray(selectedTimeArrayLocal)
-    // console.log(`The LOOPER DOOPER: ${JSON.stringify(selectedTimeArrayLocal.length, null, 2)}`);
 
 
-    // Gettin the timeStampInt and timeInt for pos2 we need this 
+    // Getting the timeStampInt and timeInt for pos2 we need this 
     // in the firebase query as a condition. 
     var lastPositionTimeObject = selectedTimeArrayLocal.find( 
       eachItem => eachItem.position === pos2)
@@ -167,7 +176,7 @@ export const ParkingHoursPicker = () => {
     // limit our search.  
 
     let q;
-    // If the hours slected is 1 
+    // If the hours selected is 1 
     if (position1TimeStamp === position2TimeStamp) {
       q = query(collection(db, 
         `reservations-${parkingSlotsuID}`), 
@@ -188,12 +197,10 @@ export const ParkingHoursPicker = () => {
     }
 
 
-    // Here we get the data from firestore and store it in an array.
+    // Here we get the data from Firestore and storing it in an array.
     var arrayOfObjectsOfTakenParkings = []
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
       arrayOfObjectsOfTakenParkings.push(doc.data())
     });
     console.log(`This is the size of the query result array: ${JSON.stringify(arrayOfObjectsOfTakenParkings.length, null, 2)}`);
@@ -211,7 +218,6 @@ export const ParkingHoursPicker = () => {
       // get random item
       const randomAvlParkingSlot = parkingSlotsInChosenParkingLot[randomIndex];
       dispatch(updateTimeSlotToBook(randomAvlParkingSlot))
-      //bookTheParking(randomAvlParkingSlot)
       dispatch(updateParkingsSlotsFull(false))
       dispatch(updateSearchCompleted(true))
       dispatch(updateSearchPressed(false));
@@ -232,9 +238,7 @@ export const ParkingHoursPicker = () => {
       parkingSlotsInChosenParkingLot.map((eachItem) => {
         var pushThisParking = ""
         var containsParking = arrayOfObjectsOfTakenParkings.find((each) => {
-          // console.log(`In Each loop: main loop ${eachItem} current loop ${each.parkingSlot}`)
           if (eachItem === each.parkingSlot){
-            // console.log(`We are in here`)
             pushThisParking = each.parkingSlot
             return true
           }
@@ -258,8 +262,8 @@ export const ParkingHoursPicker = () => {
         // each time slot as a seperate reservation.
         // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
         
-          dispatch(updateParkingsSlotsFull(false))
-          console.log('AVAILABLE')
+        dispatch(updateParkingsSlotsFull(false))
+        console.log('AVAILABLE')
         
         let difference = parkingSlotsInChosenParkingLot.filter(x => !parkingsTaken.includes(x));
         
@@ -268,7 +272,6 @@ export const ParkingHoursPicker = () => {
 
         // get random item
         const randomAvlParkingSlot = difference[randomIndex];
-        // bookTheParking(randomAvlParkingSlot)
         dispatch(updateSearchCompleted(true))
         dispatch(updateSearchPressed(false));
         // Here we add the parking in the redux which will be added when the 
@@ -278,32 +281,6 @@ export const ParkingHoursPicker = () => {
     } 
   }
 
-
-  const bookTheParking = async (parkingSlot) => {
-    console.log(`Random Parking ${parkingSlot}`)
-    console.log(`Random Parking ${uuid.v4()}`)
-    
-    // we will add a reservation for each of slots in the chosen range.
-    // If only 1 slot is chosen then our timeSlotPickedArray will be of size 1 
-
-    // console.log(`This is the array we will loop through ${JSON.stringify(localTimeSlotPickedArray, null, 2)}`)
-
-    localTimeSlotPickedArray.map((eachTimeEntryToBook) => {
-      firestoreFunctionToBook(eachTimeEntryToBook, parkingSlot)
-    })
-  } 
-
-  const firestoreFunctionToBook = async (eachTimeEntryToBook, parkingSlot) =>{
-      await setDoc(doc(db, `reservations-${parkingSlotsuID}`, uuid.v4()), {
-        parkingSlot: parkingSlot,
-        parkingLot: parkingSlotsuID,
-        timeInt: eachTimeEntryToBook.timeInInt,
-        timeStamp: eachTimeEntryToBook.timeStampInt,
-        timeString: eachTimeEntryToBook.timeSlotInString,
-        parkingID: uuid.v4(),
-        userID: userID
-      });
-  }
 
   const decreasePressed = () => {
     dispatch(decreaseHours())

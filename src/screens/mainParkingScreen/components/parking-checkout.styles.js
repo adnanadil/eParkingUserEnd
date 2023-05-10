@@ -1,3 +1,5 @@
+// Styled components which we will use in other components
+
 import styled from "styled-components/native";
 import {
   Avatar,

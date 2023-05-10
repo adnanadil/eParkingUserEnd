@@ -1,7 +1,7 @@
-import { Button } from "react-native-paper";
+// Styled buttons which we will use in other components
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
-import { colors } from "../../../infrastructure/theme/colors";
 
 
 export const TimeSlotButtonSelected = styled(TouchableOpacity)`

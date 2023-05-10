@@ -1,3 +1,6 @@
+// This is the main screen which is shown under the accounts tab and from this we can logout of the application 
+// or we can navigate to look at our bookings and from there navigate the generate the QR code.
+
 import React from "react";
 import styled from "styled-components/native";
 import { SafeArea } from "../../../Utility/SafeArea";
@@ -12,6 +15,8 @@ import { auth } from "../../../Utility/firebase.utils";
 import { useDispatch, useSelector } from "react-redux";
 import { userSignedInAction } from "../../../redux/firebaseAuth.slice";
 
+// Defining our styled components locally as we just need a list that will show the items on the page and a view to show 
+// our icon
 const AccountItem = styled(List.Item)`
   padding: ${(props) => props.theme.space[3]};
 `;
@@ -20,12 +25,19 @@ const AvatarContainer = styled.View`
 `;
 
 
+// This is the main function which will be exported and here he define the account page and 
+// the functions that it needs.
+
 export const MainAccountsScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
 
   const userEmail = useSelector((state) => state.firebaseAuthSlice.userEmail)
 
+  // This is the logout function which is called when a user presses the logout option 
+  // once the user is logged out the state is updated to show that there is no user logged into
+  // the app which causes the main navigation to navigate the user to the login page and no longer
+  // show the tab navigation hence preventing access to the user to use the application until they login
   const onLogout = () => {
     signOut(auth)
       .then(() => {
@@ -38,6 +50,7 @@ export const MainAccountsScreen = ({ navigation }) => {
       });
   };
 
+  // The elements and components of the account page can be seen in the return function 
   return (
     <SafeArea>
       <AvatarContainer>

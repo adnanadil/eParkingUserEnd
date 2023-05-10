@@ -1,8 +1,13 @@
+// This is the screen which is show by the login.navigation if the user is not logged in
+// the screen has links to two other screens which are the sign in or register screen 
+// Using the stack navigation defined in login.navigation the users will be able to 
+// navigate the either the login or register screen depending on the screen clicked by them.
+
 import React from "react";
 import LottieView from "lottie-react-native";
 
+// Here we are importing the spacer element in order to add a few spaces in the UI
 import { Spacer } from "../../../components/spacer/spacer.component";
-import { colors } from "../../../infrastructure/theme/colors";
 import {
   LoginBackground,
   LoginContainer,
@@ -14,8 +19,9 @@ import {
 import { Text } from "../../../components/typography/text.component";
 import { useFocusEffect } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { signInErrorAction } from "../../../redux/firebaseAuth.slice";
+import { signInErrorAction, signUpErrorAction } from "../../../redux/firebaseAuth.slice";
 
+// Here we define and export the screen 
 export const LoginOrRegisterScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
@@ -23,9 +29,13 @@ export const LoginOrRegisterScreen = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(signInErrorAction(""))
+      dispatch(signUpErrorAction(""))
     }, [])
   );
 
+  // It is a simple screen which has the animation at the top below which are the buttons to move to the needed page.
+  // We are using styled components hence we are defining these elements as styled components in under a the login.styles.js 
+  // file and we are importing them and using them as component here. 
   return (
     <LoginBackground>
       <LoginCover />

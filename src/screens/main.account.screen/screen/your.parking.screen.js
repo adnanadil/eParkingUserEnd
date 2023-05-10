@@ -1,7 +1,11 @@
+// This is the page which is show when the user click to see their bookings
+// We have button at the top of the screen to allow the user to select a parking lot for which they would like to
+// see the booking for and this will show a picker to choose the parking lot for which they would
+// like to see the booking for.
+// The list then shows all the bookings for the current user in that parking lot.
+
 import React, { useEffect, useState } from "react";
 import { Button, List } from "react-native-paper";
-import { FlatList } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import { SafeArea } from "../../../Utility/SafeArea";
 import { Picker } from "@react-native-picker/picker";
 
@@ -10,20 +14,10 @@ import moment from "moment";
 
 import { useSelector } from "react-redux";
 import { db } from "../../../Utility/firebase.utils";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  doc,
-} from "firebase/firestore";
-import { async } from "@firebase/util";
-import PickerComponent from "../components/picker.parkingLoots";
+import { collection, query, where, getDocs, setDoc } from "firebase/firestore";
 import { Text } from "../../../components/typography/text.component";
 import { View } from "react-native";
 import { BookingList } from "../components/bookings-list.styles";
-import { LoadingIndicator, LoadingIndicatorCustom } from "../components/loading.indicator";
 import { PaymentProcessing } from "../../mainParkingScreen/components/parking-checkout.styles";
 
 const YourParkingItem = styled(List.Item)`
@@ -37,13 +31,10 @@ export const MoveButton = styled(Button).attrs({
 `;
 
 export const YourParkingScreen = ({ navigation }) => {
+  // Defining the state and redux variables to be used
   const currentUserID = useSelector((state) => state.firebaseAuthSlice.userUID);
   const parkingLots = useSelector((state) => state.firestoreSlice.parkingLots);
-  var parkingLotsWithAdded = [{name: "Parking Slots"}, ...parkingLots]
-  const [parkingLotsForPicker, updateParkingLotsForPicker] = useState([])
-  const parkingSlotsuID = useSelector(
-    (state) => state.firestoreSlice.parkingSlotsuID
-  );
+  var parkingLotsWithAdded = [{ name: "Parking Slots" }, ...parkingLots];
   const [parkingSlots, updateParkingSlots] = useState([]);
   const [timeStamp1, updateTimeStamp1] = useState("");
   const [currentTimeHour, updateCurrentTimeHour] = useState("");
@@ -58,33 +49,15 @@ export const YourParkingScreen = ({ navigation }) => {
   const [bookingAvailable, setBookingAvailable] = useState(false);
   const [parkingLotSelectedName, setParkingLotSelectedName] = useState("");
 
-  const [parkingLotsLocal, setParkingLotsLocal] = useState([
-    "Hello there",
-    "Please show this",
-  ]);
-
+  // Once the component is mounted we will get the current date and time
   useEffect(() => {
-    console.log(
-      `!!!!!!!!!!!!!!! These are the parking lots ${JSON.stringify(
-        parkingLots,
-        null,
-        2
-      )}`
-    );
-    // setParkingLotsLocal(parkingSlots)
-    console.log(`Hello there: ${parkingLotsWithAdded}`)
-    // console.log(parkingLotsWithAdded)
     getTheTimeStamps();
   }, []);
 
-  // We will run this once the state is updated with the current time array.
-  useEffect(() => {
-    // console.log(`Re-render`)
-    // setParkingLotsLocal(parkingSlots)
-    // getTheBookedParkings();
-    // console.log(`These are the parking lots ${parkingLots[0]}`)
-  }, [timeStamp1, showPicker, parkingLotSelectedName]);
+  // We will run this once the state is updated with the current time array to re-render the  view
+  useEffect(() => {}, [timeStamp1, showPicker, parkingLotSelectedName]);
 
+  // We will get the bookings for the specific user at the parking lot and we are using the userID for this
   const getTheBookedParkings = async (itemValue) => {
     console.log(`We will work on getting the parking for ${itemValue}`);
     console.log(`Today ${timeStamp1}`);
@@ -100,8 +73,6 @@ export const YourParkingScreen = ({ navigation }) => {
     var arrayOfBookingsObjects = [];
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
       arrayOfBookingsObjects.push(doc.data());
     });
     console.log(
@@ -112,17 +83,17 @@ export const YourParkingScreen = ({ navigation }) => {
       )}`
     );
 
-    if (arrayOfBookingsObjects.length === 0){
-      // We no bookings at the time
-      setBookingAvailable(false)
-    }else{
+    if (arrayOfBookingsObjects.length === 0) {
+      // We have no bookings at the time
+      setBookingAvailable(false);
+    } else {
       // We have bookings at the time
-      setBookingAvailable(true)
+      setBookingAvailable(true);
     }
 
     setLoading(!loading);
     setBookings(arrayOfBookingsObjects);
-    setShowLoader(false)
+    setShowLoader(false);
 
     // Once we get the data
     // setIsLoading(false);
@@ -131,7 +102,6 @@ export const YourParkingScreen = ({ navigation }) => {
   const getTheTimeStamps = async () => {
     // We will get the time stamp of current and next date
 
-    let parkingTimeSlotsRecieved = [];
     let tempParkingSlotsLocalArrayObject = [];
 
     var unixTimestamp_2 = Date.now();
@@ -150,17 +120,14 @@ export const YourParkingScreen = ({ navigation }) => {
         }
       );
 
-      const timeStringSplitArray = localDate_fromUnix.split(" ")
+      const timeStringSplitArray = localDate_fromUnix.split(" ");
 
-      // const dateInString = localDate_fromUnix.slice(0, 10);
       const dateInString = timeStringSplitArray[0];
-      updateCurrentDate(dateInString)
+      updateCurrentDate(dateInString);
       var timeStamp = moment(dateInString, "MM/DD/YYYY").unix();
-      // console.log(`Today's stamp ${timeStamp}`)
 
-      // console.log(`Time Value is: ${localDate_fromUnix.slice(11,22)}`);
-      // var sendToGet_24hrs = localDate_fromUnix.slice(11, 22);
-      var sendToGet_24hrs = timeStringSplitArray[1] + " " + timeStringSplitArray[2] ;
+      var sendToGet_24hrs =
+        timeStringSplitArray[1] + " " + timeStringSplitArray[2];
       localTime_24hrs = convertTime(sendToGet_24hrs);
       const timeInString = localTime_24hrs.slice(0, 2);
       let timeDots_2 = ":00";
@@ -185,12 +152,12 @@ export const YourParkingScreen = ({ navigation }) => {
         timeZoneName: "short",
       }
     );
-    const timeStringSplitArray_2 = localDate_fromUnix_2.split(" ")
-    // var currentTimeToConvert = localDate_fromUnix_2.slice(11, 22);
-    var currentTimeToConvert = timeStringSplitArray_2[1] + " " + timeStringSplitArray_2[2];
+    const timeStringSplitArray_2 = localDate_fromUnix_2.split(" ");
+    var currentTimeToConvert =
+      timeStringSplitArray_2[1] + " " + timeStringSplitArray_2[2];
     var currentHoursIn24hours = convertTime(currentTimeToConvert);
-    console.log(`Current Time !!! ${currentHoursIn24hours}`)
-    updateCurrentTimeHour(parseInt(currentHoursIn24hours))
+    console.log(`Current Time !!! ${currentHoursIn24hours}`);
+    updateCurrentTimeHour(parseInt(currentHoursIn24hours));
 
     updateParkingSlots(tempParkingSlotsLocalArrayObject);
     getTheTimeStampsString(tempParkingSlotsLocalArrayObject);
@@ -215,41 +182,40 @@ export const YourParkingScreen = ({ navigation }) => {
     var timeStamp2 = tempParkingSlotsLocalArrayObject.filter(
       (eachItem) => eachItem.position === 23
     );
-    // console.log(`Time Stamp 1: ${JSON.stringify(timeStamp1[0].timeStampInt, null, 2)}`);
-    // console.log(`Time Stamp 2: ${timeStamp2[0].timeStampInt}`);
     updateTimeStamp1(timeStamp1[0].timeStampInt);
     updateTimeStamp2(timeStamp2[0].timeStampInt);
   };
 
+  // This function is run when a value is selected on the picker based on the parking lot chosen
+  // we set its id as the parking lot which is selected and based on this we will search the database
   const onValueChangePicker = (itemValue, itemIndex) => {
     setSelectedParkingUIDValue(itemValue);
-    console.log(`we are here boss!!!`);
     setShowPicker(false);
-    // setParkingLotSelectedName(parkingLots[itemIndex].name);
-    if (itemIndex ==0){
+    if (itemIndex == 0) {
       setParkingLotSelectedName("Choose A Parking Slot");
-      setShowLoader(false)
-      setBookingAvailable(false)
-     setLoading(!loading);
-    }else {
+      setShowLoader(false);
+      setBookingAvailable(false);
+      setLoading(!loading);
+    } else {
       setParkingLotSelectedName(parkingLotsWithAdded[itemIndex].name);
       getTheBookedParkings(itemValue);
     }
     // Search For Bookings.
-    setShowLoader(true)
+    setShowLoader(true);
   };
 
+  // Function run when the choose parking lot button is pressed.
   const chooseParkingLotPressed = () => {
     setShowPicker(true);
     setLoading(false);
   };
 
+  // Here we display the imported elements and we have developed logic based on ternary operations
+  // to show the correct element based on the status of the app and the data of it.
   return (
     <SafeArea>
-      {/* <PickerComponent></PickerComponent> */}
       <View style={{ marginLeft: 10, marginRight: 10, marginTop: 10 }}>
         <Button mode="contained" onPress={chooseParkingLotPressed}>
-          {/* <Text variant = "label">Choose a Parking Lot</Text> */}
           Choose a Parking Lot
         </Button>
       </View>
@@ -262,9 +228,6 @@ export const YourParkingScreen = ({ navigation }) => {
             onValueChangePicker(itemValue, itemIndex)
           }
         >
-          {/* <Picker.Item label="" value=""></Picker.Item> */}
-          {/* <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" /> */}
           {parkingLotsWithAdded.map((eachParking) => {
             return (
               <Picker.Item
@@ -280,26 +243,26 @@ export const YourParkingScreen = ({ navigation }) => {
           <Text variant="title">{`${parkingLotSelectedName}`}</Text>
         </View>
       )}
-      {!loading ? 
-      (showLoader && <PaymentProcessing></PaymentProcessing>)
-      :
-      ( bookingAvailable ? 
+      {!loading ? (
+        showLoader && <PaymentProcessing></PaymentProcessing>
+      ) : bookingAvailable ? (
         <BookingList
           data={bookings}
-          renderItem={({item}) => {
-            console.log(`Each booking name ${JSON.stringify(item, null, 2)}`)
+          renderItem={({ item }) => {
+            console.log(`Each booking name ${JSON.stringify(item, null, 2)}`);
             return (
               <YourParkingItem
-                title= {`Parking Slot: ${item.parkingSlot}`}
+                title={`Parking Slot: ${item.parkingSlot}`}
                 // description={`Duration ${item.timeInt}:00 to ${item.timeInt+1}:00`}
-                description={`Duration ${item.timeInt}:00 to ${(item.timeInt !== 23) ? item.timeInt+1 : item.timeInt-23}:00`}
-
+                description={`Duration ${item.timeInt}:00 to ${
+                  item.timeInt !== 23 ? item.timeInt + 1 : item.timeInt - 23
+                }:00`}
                 left={(props) => (
                   <List.Icon {...props} color="black" icon="car" />
                 )}
                 onPress={() =>
                   navigation.navigate("QR Code", {
-                    booking: item
+                    booking: item,
                   })
                 }
               />
@@ -307,7 +270,8 @@ export const YourParkingScreen = ({ navigation }) => {
           }}
           keyExtractor={(item) => item.parkingID}
         />
-        :<View style= {{marginTop: 50}}>
+      ) : (
+        <View style={{ marginTop: 50 }}>
           <Text variant="alert">No Bookings Found :(</Text>
         </View>
       )}

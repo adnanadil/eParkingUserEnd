@@ -1,3 +1,5 @@
+// A simple loading indicator which we will use rather then coding it in all the pages
+
 import React from "react";
 import { ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
