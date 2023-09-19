@@ -58,6 +58,7 @@ export const ParkingTimePickerBar = () => {
           timeZoneName: "short",
         }
       );
+      console.log(`Unix Timestamp: ${unixTimestamp_2}`)
       unixTimestamp_2 = unixTimestamp_2 + 3600000 * i;
       var localDate_fromUnix = new Date(unixTimestamp_2).toLocaleString(
         "en-US",
@@ -66,6 +67,7 @@ export const ParkingTimePickerBar = () => {
           timeZoneName: "short",
         }
       );
+      console.log(`Local time from Unix Timestamp: ${localDate_fromUnix}`)
 
       // splitting the local date and time string to get the date and time from it 
       let arrOfTime = localDate_fromUnix.split(" ");
@@ -79,6 +81,7 @@ export const ParkingTimePickerBar = () => {
       const timeInString = localTime_24hrs.slice(0, 2);
       let timeDots_2 = ":00";
       let finalTimeInString = timeInString.concat(timeDots_2);
+      console.log(`Time in string: ${finalTimeInString}`)
 
       // Creating a new object of items for each iteration and then this will be saved as an 
       // array of object which we will loop through and show each button which will get the needed props 

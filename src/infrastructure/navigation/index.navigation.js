@@ -1,7 +1,7 @@
 // This is the main navigation we called this navigation in App.js that is as soon as the 
 // app is opened we open this navigation and this is where we check if the user is logged in or not 
 // if the user is logged in then we show the main page to the user if not we show the page where the 
-// the user can choose to their login or register. 
+// the user can choose to login or register. 
 // This is one of our constraints of the project which does not allow the user to use application until the 
 // user is signed as this will increase the security of the application. 
 
@@ -50,7 +50,7 @@ export const RootNavigation = () => {
         dispatch(userUIDAction(user.uid));
         dispatch(userEmailAction(user.email));
       } else {
-        // User is signed out
+        // User is signed out by default in the redux store the value of isAuthenticated is false
       }
     });
   }, []);

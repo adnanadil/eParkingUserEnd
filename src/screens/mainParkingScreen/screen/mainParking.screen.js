@@ -44,7 +44,7 @@ export const MainParikingScreen = ({ navigation }) => {
   const parkingLotsLoading = useSelector((state) => state.firestoreSlice.parkingLotsLoading)
   const parkingLots = useSelector((state) => state.firestoreSlice.parkingLots)
 
-  // We use this function to get all the parking lots
+  // We use this function to get all the parking lots from our firebase database (FireStore)
   const getParkingLots = async () => {
     const q = query(collection(db, "parkingLots"));
     const querySnapshot = await getDocs(q);
@@ -55,7 +55,7 @@ export const MainParikingScreen = ({ navigation }) => {
     dispatch(updateParkingLots(parkingLotsArrayOfObjects))
   };
 
-  // Called with component (screen) mounts
+  // Called when component (screen) mounts
   useEffect(() => {
     getParkingLots()
   }, []);
@@ -78,7 +78,7 @@ export const MainParikingScreen = ({ navigation }) => {
 
  
 
-  // Here wer render the different elements of the page .. if the parking lots are still being 
+  // Here we render the different elements of the page .. if the parking lots are still being 
   // downloaded from the sever we show the spinner else we show the ParkingList styled component of type list
   // In the list view we render each card, add a touch functionality to move to the booking page and also add 
   // an animation to beautify the app

@@ -1,3 +1,5 @@
+// This JS files helps in getting time from the built in JS library
+
 export const getTime = () => {
   var unixTimestamp = Date.now();
   var localDate = new Date(unixTimestamp).toLocaleString("en-GB", {
@@ -5,9 +7,7 @@ export const getTime = () => {
     timeZoneName: "short",
     timeStyle: "short",
   });
-  console.log(localDate);
   const currentHours = localDate.slice(0, 2);
-  console.log(currentHours);
   var currentHoursInt = parseInt(currentHours);
 
   var valueToPush = currentHoursInt;
@@ -30,5 +30,4 @@ export const getTime = () => {
     console.log(`Time Slots: ${finalTimeToDisplay}`);
   });
 
-  //   console.log(d.getHours());
 };

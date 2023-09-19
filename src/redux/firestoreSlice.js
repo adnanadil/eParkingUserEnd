@@ -1,6 +1,6 @@
 // One of the slice with the actions and state that we will use in the redux store and 
 // hence throughout the app we can access these states and update them as needed.
-// Got the structure from Redux documentation: https://redux.js.org/tutorials/quick-start
+// Detailed information and support from the redux docs: https://redux.js.org/tutorials/quick-start
 
 import { createSlice } from "@reduxjs/toolkit";
 

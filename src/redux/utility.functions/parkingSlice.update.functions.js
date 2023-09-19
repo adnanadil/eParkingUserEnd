@@ -1,4 +1,5 @@
 // Helper function to update the state from the action
+// These functions are called from respective Slice  
 
 export const updateTheTimeSlot = (oldTimeSlots, newTimeSlot) => {
     const timeSlotPressed = oldTimeSlots.find(

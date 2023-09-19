@@ -1,3 +1,5 @@
+// Here we are creating styled components which will be used in the account pages/screens
+
 import styled from "styled-components/native";
 import { Button, TextInput } from "react-native-paper";
 import { colors } from "../../../infrastructure/theme/colors";

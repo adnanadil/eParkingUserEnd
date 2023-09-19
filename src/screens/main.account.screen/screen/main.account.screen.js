@@ -1,5 +1,5 @@
 // This is the main screen which is shown under the accounts tab and from this we can logout of the application 
-// or we can navigate to look at our bookings and from there navigate the generate the QR code.
+// or we can navigate to look at our bookings and from there navigate to generate the QR code for the booking
 
 import React from "react";
 import styled from "styled-components/native";
@@ -25,7 +25,7 @@ const AvatarContainer = styled.View`
 `;
 
 
-// This is the main function which will be exported and here he define the account page and 
+// This is the main function which will be exported and here we define the account page and 
 // the functions that it needs.
 
 export const MainAccountsScreen = ({ navigation }) => {
