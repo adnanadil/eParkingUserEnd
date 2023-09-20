@@ -39,7 +39,8 @@
     "redux": "^4.2.1",
     "socket.io-client": "^4.6.1",
     "styled-components": "^5.3.8",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "expo-dev-client": "~2.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
